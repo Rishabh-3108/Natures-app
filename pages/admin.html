@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — Nature's Touch</title>
+<link rel="stylesheet" href="../css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #2d5a27;
+    --sidebar-bg: #0f1a0f;
+    --bg-main: #f8faf8;
+    --text-main: #1a2e1a;
+    --text-muted: #6a8a6a;
+    --border: #e2ede2;
+    --white: #ffffff;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg-main);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-main);
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background: var(--sidebar-bg);
+    display: flex;
+    flex-direction: column;
+    padding: 32px 20px;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: 100;
+  }
+
+  .sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 10px;
+    margin-bottom: 40px;
+  }
+
+  .sidebar-logo-icon {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, #3a6b3a, #1a2e1a);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+
+  .sidebar-logo-text {
+    font-size: 17px;
+    font-weight: 700;
+    color: white;
+  }
+
+  .sidebar-logo-text span {
+    display: block;
+    font-size: 10px;
+    font-weight: 500;
+    color: #7aa87a;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+  }
+
+  .nav-section-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #4a6a4a;
+    padding: 0 12px;
+    margin-bottom: 12px;
+    margin-top: 24px;
+  }
+
+  .sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    color: #a0bfa0;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+    margin-bottom: 4px;
+  }
+
+  .sidebar a:hover { background: rgba(255,255,255,0.05); color: white; }
+  .sidebar a.active { background: var(--primary); color: white; }
+
+  .sidebar-bottom { margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08); }
+
+  /* ── MAIN ── */
+  .main { margin-left: 260px; flex: 1; padding: 40px; }
+
+  .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+  .page-title { font-size: 28px; font-weight: 800; color: #0f1a0f; }
+  .page-subtitle { font-size: 14px; color: var(--text-muted); }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
+
+  .stat-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 28px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: var(--shadow);
+  }
+
+  .stat-icon {
+    width: 60px; height: 60px;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+  }
+  .stat-icon.green { background: #effaf0; }
+  .stat-icon.amber { background: #fff9eb; }
+  .stat-icon.blue { background: #f0f7ff; }
+
+  .stat-label { font-size: 13px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+  .stat-value { font-size: 30px; font-weight: 800; color: #0f1a0f; }
+
+  /* ── CONTENT CARD & TABLE ── */
+  .content-card {
+    background: var(--white);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .content-card-header { padding: 24px 28px; border-bottom: 1px solid var(--bg-main); }
+  .content-card-title { font-size: 17px; font-weight: 700; }
+
+  .data-table { width: 100%; border-collapse: collapse; }
+  .data-table th {
+    background: #fcfdfc;
+    padding: 16px 28px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .data-table td { padding: 18px 28px; font-size: 15px; border-bottom: 1px solid var(--bg-main); }
+
+  .avatar {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    background: #e2ede2;
+    color: #2d5a27;
+  }
+
+  .id-chip { font-family: monospace; background: #f0f4f0; padding: 4px 8px; border-radius: 6px; font-size: 12px; }
+
+  .customer-cell { display: flex; align-items: center; gap: 12px; }
+
+  .two-col-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+
+  .section { display: none; }
+  .section.active { display: block; animation: fadeIn 0.3s ease; }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .badge { padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+  .badge.admin { background: #f3e5f5; color: #7b1fa2; }
+  .badge.user { background: #f1f8f1; color: #2d5a27; }
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon">🌿</div>
+    <div class="sidebar-logo-text">Nature's Touch <span>Admin Panel</span></div>
+  </div>
+
+  <div class="nav-section-label">Menu</div>
+  <a href="#" onclick="show('dashboard',this)" class="active">📊 Dashboard</a>
+  <a href="#" onclick="show('orders',this)">📦 Orders</a>
+  <a href="#" onclick="show('customers',this)">👥 Customers</a>
+
+  <div class="sidebar-bottom">
+    <a href="../index.html" target="_blank">🌐 View Website</a>
+    <a href="#" onclick="logout()" style="color:#ff8a8a;">🚪 Logout</a>
+  </div>
+</div>
+
+<div class="main">
+  <div id="dashboard" class="section active">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Dashboard</div>
+        <div class="page-subtitle">Quick overview of your store performance.</div>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon green">📦</div>
+        <div><div class="stat-label">Orders</div><div class="stat-value" id="totalOrders">—</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon amber">💰</div>
+        <div><div class="stat-label">Revenue</div><div class="stat-value" id="totalRevenue">—</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon blue">👤</div>
+        <div><div class="stat-label">Users</div><div class="stat-value" id="totalCustomers">—</div></div>
+      </div>
+    </div>
+
+    <div class="two-col-grid">
+      <div class="content-card">
+        <div class="content-card-header"><div class="content-card-title">Recent Orders</div></div>
+        <table class="data-table">
+          <thead><tr><th>Customer</th><th>Amount</th></tr></thead>
+          <tbody id="recentOrdersTable"><tr><td colspan="2">Loading...</td></tr></tbody>
+        </table>
+      </div>
+      <div class="content-card">
+        <div class="content-card-header"><div class="content-card-title">Recent Signups</div></div>
+        <table class="data-table">
+          <thead><tr><th>Name</th><th>Role</th></tr></thead>
+          <tbody id="recentCustomersTable"><tr><td colspan="2">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="orders" class="section">
+    <div class="page-header">
+      <div><div class="page-title">Orders</div><div class="page-subtitle" id="orderCount">0 total orders</div></div>
+    </div>
+    <div class="content-card">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Amount</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="ordersTable"><tr><td colspan="4">Loading orders...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="customers" class="section">
+    <div class="page-header">
+      <div><div class="page-title">Customers</div><div class="page-subtitle" id="customerCount">0 users</div></div>
+    </div>
+    <div class="content-card">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Joined</th>
+          </tr>
+        </thead>
+        <tbody id="customersTable"><tr><td colspan="4">Loading customers...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("nt_session"));
+
+  if (!user || user.role !== "admin") {
+    alert("Access denied");
+    window.location.href = "../pages/login.html";
+  }
+
+  function show(section, el) {
+    document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+    document.getElementById(section).classList.add("active");
+    document.querySelectorAll(".sidebar a").forEach(a => a.classList.remove("active"));
+    el.classList.add("active");
+    if (section === "orders") loadOrders();
+    if (section === "customers") loadCustomers();
+  }
+
+  function getInitials(name) {
+    if (!name) return "?";
+    return name.split(" ").map(w => w[0]).join("").substring(0, 2).toUpperCase();
+  }
+
+  async function loadDashboard() {
+    try {
+      const [ordersRes, customersRes] = await Promise.all([
+        fetch("http://localhost:5000/api/order", { headers: { Authorization: token } }),
+        fetch("http://localhost:5000/api/users", { headers: { Authorization: token } })
+      ]);
+      const orders = await ordersRes.json();
+      const customers = await customersRes.json();
+      const totalRev = Array.isArray(orders) ? orders.reduce((s, o) => s + (o.total || 0), 0) : 0;
+
+      document.getElementById("totalOrders").textContent = Array.isArray(orders) ? orders.length : "—";
+      document.getElementById("totalRevenue").textContent = "₹" + totalRev.toLocaleString('en-IN');
+      document.getElementById("totalCustomers").textContent = Array.isArray(customers) ? customers.length : "—";
+
+      if (Array.isArray(orders)) {
+        const recent = [...orders].reverse().slice(0, 5);
+        document.getElementById("recentOrdersTable").innerHTML = recent.length ? recent.map(o => `
+          <tr>
+            <td>${o.address?.name || "Guest"}</td>
+            <td style="font-weight:700;color:var(--primary);">₹${(o.total || 0).toLocaleString('en-IN')}</td>
+          </tr>`).join("") : `<tr><td colspan="2">No orders</td></tr>`;
+      }
+
+      if (Array.isArray(customers)) {
+        const recent = [...customers].reverse().slice(0, 5);
+        document.getElementById("recentCustomersTable").innerHTML = recent.length ? recent.map(u => `
+          <tr>
+            <td>
+              <div class="customer-cell">
+                <div class="avatar">${getInitials(u.name)}</div>
+                ${u.name || "—"}
+              </div>
+            </td>
+            <td><span class="badge ${u.role === 'admin' ? 'admin' : 'user'}">${u.role || 'user'}</span></td>
+          </tr>`).join("") : `<tr><td colspan="2">No customers</td></tr>`;
+      }
+    } catch (err) { console.error(err); }
+  }
+
+  async function loadOrders() {
+    try {
+      const res = await fetch("http://localhost:5000/api/order", { headers: { Authorization: token } });
+      const data = await res.json();
+      if (!Array.isArray(data)) return;
+      document.getElementById("orderCount").textContent = data.length + " total orders";
+      document.getElementById("ordersTable").innerHTML = data.length ? [...data].reverse().map(o => `
+        <tr>
+          <td><span class="id-chip">${o._id.slice(-8).toUpperCase()}</span></td>
+          <td>
+            <div class="customer-cell">
+              <div class="avatar">${getInitials(o.address?.name)}</div>
+              <div><div style="font-weight:600;">${o.address?.name || "Guest"}</div><div style="font-size:12px;color:var(--text-muted);">${o.userEmail || ""}</div></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:var(--primary);">₹${(o.total || 0).toLocaleString('en-IN')}</td>
+          <td style="color:var(--text-muted);font-size:13px;">${new Date(o.createdAt).toLocaleDateString('en-IN')}</td>
+        </tr>`).join("") : `<tr><td colspan="4">No orders found</td></tr>`;
+    } catch (err) { }
+  }
+
+  async function loadCustomers() {
+    try {
+      const res = await fetch("http://localhost:5000/api/users", { headers: { Authorization: token } });
+      const data = await res.json();
+      if (!Array.isArray(data)) return;
+      document.getElementById("customerCount").textContent = data.length + " registered users";
+      document.getElementById("customersTable").innerHTML = data.map(u => `
+        <tr>
+          <td><div class="customer-cell"><div class="avatar">${getInitials(u.name)}</div><span style="font-weight:600;">${u.name || "—"}</span></div></td>
+          <td style="color:var(--text-muted);">${u.email}</td>
+          <td><span class="badge ${u.role === 'admin' ? 'admin' : 'user'}">${u.role || 'user'}</span></td>
+          <td style="color:var(--text-muted);font-size:13px;">${u.createdAt ? new Date(u.createdAt).toLocaleDateString('en-IN') : '—'}</td>
+        </tr>`).join("");
+    } catch (err) { }
+  }
+
+  function logout() { localStorage.clear(); window.location.href = "../pages/login.html"; }
+
+  loadDashboard();
+</script>
+</body>
+</html>

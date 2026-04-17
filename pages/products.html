@@ -182,6 +182,25 @@
 
     applyFilters();
   </script>
+  <script>
+    const user = JSON.parse(localStorage.getItem("nt_session"));
+    const token = localStorage.getItem("token");
+    const authBtn = document.getElementById("authBtn");
+    const adminBtn = document.getElementById("adminBtn");
+
+    if (user && token) {
+      authBtn.textContent = "Logout";
+      authBtn.onclick = function () {
+        localStorage.removeItem("token");
+        localStorage.removeItem("nt_session");
+        window.location.href = "login.html";
+      };
+
+      if (user.role === "admin") {
+        adminBtn.style.display = "inline-block";
+      }
+    }
+  </script>
   <!-- <script src="../js/main.js"></script> -->
 </body>
 
