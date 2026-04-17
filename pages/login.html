@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Nature's Touch</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body {
+      background: var(--linen);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .auth-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 20px 60px;
+    }
+
+    .auth-card {
+      background: white;
+      border-radius: 24px;
+      padding: 52px 48px;
+      width: 100%;
+      max-width: 460px;
+      box-shadow: 0 4px 40px rgba(26, 46, 26, 0.1);
+    }
+
+    .auth-logo {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .auth-logo .icon {
+      width: 64px;
+      height: 64px;
+      background: var(--forest);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      margin: 0 auto 16px;
+    }
+
+    .auth-logo h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: var(--forest);
+      margin-bottom: 6px;
+    }
+
+    .auth-logo p {
+      font-size: 14px;
+      color: #888;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 24px 0;
+      color: #bbb;
+      font-size: 13px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--light-gray);
+    }
+
+    .auth-footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 14px;
+      color: #888;
+    }
+
+    .auth-footer a {
+      color: var(--forest);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .error-msg {
+      background: #fff0f0;
+      border: 1px solid #ffd0d0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #c0392b;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .admin-hint {
+      background: var(--linen);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 20px;
+      line-height: 1.8;
+    }
+
+    .admin-hint strong {
+      color: var(--forest);
+    }
+
+    .admin-hint code {
+      background: rgba(26, 46, 26, 0.08);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: var(--forest);
+      font-family: monospace;
+    }
+  </style>
+  <link rel="stylesheet" href="../css/pages.css">
+</head>
+
+<body>
+
+  <nav>
+    <div class="nav-auth-left">
+      <a href="signup.html" class="btn-primary btn-primary-sm">Sign Up</a>
+    </div>
+    <a href="../index.html" class="nav-logo">
+      <div class="nav-logo-icon">🌿</div>
+      <span class="nav-logo-text">Nature's Touch</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="products.html">Products</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="nav-cart" onclick="window.location.href='cart.html'">
+        🛒<span class="cart-badge" style="display:none">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="auth-wrap">
+    <div class="auth-card">
+
+      <div class="auth-logo">
+        <div class="icon">🌿</div>
+        <h2>Welcome Back</h2>
+        <p>Sign in to your Nature's Touch account</p>
+      </div>
+
+      <div class="admin-hint">
+        🔐 <strong>Admin Login:</strong><br>
+        Email: <code>admin@naturestouch.com</code><br>
+        Password: <code>admin123</code><br><br>
+        👤 Or use any account you registered via Sign Up
+      </div>
+
+      <div class="error-msg" id="errorMsg"></div>
+
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="emailInput" placeholder="your@email.com"
+          onkeydown="if(event.key==='Enter') loginUser(event)">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="passwordInput" placeholder="••••••••"
+          onkeydown="if(event.key==='Enter') loginUser(event)">
+      </div>
+
+      <button type="button" onclick="loginUser(event)" style="width:100%;padding:14px;font-size:15px;margin-top:8px;">
+        Sign In →
+      </button>
+
+      <div class="divider">or</div>
+
+      <div class="auth-footer">
+        Don't have an account? <a href="signup.html">Create one free</a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="toast"></div>
+
+  <script src="../js/utils.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/cart.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/main.js"></script>
+
+  <script>
+    async function loginUser(event) {
+      event.preventDefault();
+
+      const email = document.getElementById('emailInput').value.trim();
+      const password = document.getElementById('passwordInput').value.trim();
+
+      if (!email || !password) {
+        showError('Please enter email and password');
+        return;
+      }
+
+      try {
+        const res = await fetch('http://localhost:5000/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email.toLowerCase(), password })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          showError(data.msg || 'Login failed');
+          return;
+        }
+
+        // Save session
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('nt_session', JSON.stringify(data.user));
+
+        window.location.href = '../index.html';
+
+      } catch (err) {
+        console.error(err);
+        showError('Server error. Please try again.');
+      }
+    }
+
+    function showError(msg) {
+      const el = document.getElementById('errorMsg');
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+  </script>
+
+</body>
+
+</html>

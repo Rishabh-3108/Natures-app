@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice</title>
+
+    <!-- PDF LIB -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #f5f5f5;
+            padding: 40px;
+        }
+
+        .invoice {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        /* HEADER */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 2px solid #1f3f2b;
+            padding-bottom: 15px;
+        }
+
+        .logo {
+            display: flex;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        .invoice-meta {
+            text-align: right;
+        }
+
+        /* BUTTONS */
+        .btn {
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        .btn-primary {
+            background: #1f3f2b;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #eee;
+        }
+
+        /* BILLING */
+        .billing {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background: #1f3f2b;
+            color: white;
+            padding: 12px;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .product-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .product-cell img {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+        }
+
+        /* TOTAL */
+        .summary {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .summary h2 {
+            color: #1f3f2b;
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: #777;
+        }
+
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="invoice" id="invoice">
+
+        <!-- HEADER -->
+        <div class="header">
+            <div class="logo">
+                <img src="../images/home1.jpg">
+                <div>
+                    <h2>Nature's Touch</h2>
+                    <small>Eco-friendly Products</small><br>
+                    <small>Ahmedabad, India</small>
+                </div>
+            </div>
+
+            <div class="invoice-meta">
+                <h3>INVOICE</h3>
+                <p id="invNo"></p>
+                <p id="invDate"></p>
+
+                <button onclick="downloadPDF()" class="btn btn-primary">Download PDF</button>
+                <button onclick="window.location.href='../index.html'" class="btn btn-secondary">⬅ Back</button>
+            </div>
+        </div>
+
+        <!-- BILLING -->
+        <div class="billing">
+            <div>
+                <h4>Bill To</h4>
+                <p id="email"></p>
+            </div>
+
+
+            <div>
+                <h4>Shipping Address</h4>
+                <p id="address"></p>
+            </div>
+
+            <div>
+                <h4>Payment</h4>
+                <p>Cash on Delivery</p>
+            </div>
+        </div>
+
+        <!-- TABLE -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="items"></tbody>
+        </table>
+
+        <!-- SUMMARY -->
+        <div class="summary" id="summary"></div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            Thank you for shopping with Nature's Touch 🌱 <br>
+            GST Included • Secure Payment • Fast Delivery <br>
+            support@naturestouch.com | +91 9876543210
+        </div>
+
+    </div>
+
+    <script>
+        const order = JSON.parse(localStorage.getItem("invoice"));
+        if (order && order.address) {
+            document.getElementById("address").innerHTML = `
+    ${order.address.name}<br>
+    ${order.address.address}<br>
+    📞 ${order.address.phone}
+  `;
+
+        } else {
+
+            document.getElementById("address").innerText = "No address found";
+
+        }
+
+        if (order) {
+
+            // Invoice number
+            document.getElementById("invNo").innerText =
+                "Invoice #: INV-" + new Date().getFullYear() + "-" + order._id.slice(-4);
+
+            document.getElementById("invDate").innerText =
+                new Date(order.createdAt).toLocaleString();
+
+            document.getElementById("email").innerText = order.userEmail;
+
+            // Address (safe check)
+            if (order.address) {
+                document.getElementById("address").innerHTML = `
+      ${order.address.name || ""}<br>
+      ${order.address.address || ""}<br>
+      ${order.address.city || ""} - ${order.address.pincode || ""}
+    `;
+            } else {
+                document.getElementById("address").innerText = "N/A";
+            }
+
+            let html = "";
+            let subtotal = 0;
+
+            order.items.forEach(item => {
+                const total = item.price * item.qty;
+                subtotal += total;
+
+                const imgSrc = item.img
+                    ? "../images/" + item.img
+                    : "../images/default.png";
+
+                html += `
+      <tr>
+        <td class="product-cell">
+          <img src="${imgSrc}">
+          ${item.name}
+        </td>
+        <td>₹${item.price}</td>
+        <td>${item.qty}</td>
+        <td>₹${total}</td>
+      </tr>
+    `;
+            });
+
+            document.getElementById("items").innerHTML = html;
+
+            const gst = Math.round(subtotal * 0.05);
+            const finalTotal = subtotal + gst;
+
+            document.getElementById("summary").innerHTML = `
+    <p>Subtotal: ₹${subtotal}</p>
+    <p>Shipping: FREE</p>
+    <p>GST (5%): ₹${gst}</p>
+    <h2>Total: ₹${finalTotal}</h2>
+  `;
+        }
+
+        // PDF DOWNLOAD
+        function downloadPDF() {
+            const element = document.getElementById("invoice");
+
+            // hide buttons manually (important for html2pdf)
+            document.querySelectorAll(".no-print").forEach(el => el.style.display = "none");
+
+            html2pdf().set({
+                margin: 10,
+                filename: 'invoice.pdf',
+                image: { type: 'jpeg', quality: 1 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            }).from(element).save().then(() => {
+
+                // show buttons again after download
+                document.querySelectorAll(".no-print").forEach(el => el.style.display = "inline-block");
+
+            });
+        }
+    </script>
+
+</body>
+
+</html>

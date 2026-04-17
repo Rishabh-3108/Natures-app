@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products — Nature's Touch</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/products.css">
+  <link rel="stylesheet" href="../css/pages.css">
+</head>
+
+<body>
+
+  <nav>
+    <div class="nav-auth-left">
+      <a href="login.html" class="btn-primary btn-primary-sm" id="authBtn">Login / Sign Up</a>
+      <a href="../Admin/admin.html" class="btn-primary btn-primary-sm" id="adminBtn"
+        style="display:none;background:var(--earth)">⚙️ Admin</a>
+    </div>
+    <a href="../index.html" class="nav-logo">
+      <div class="nav-logo-icon">🌿</div>
+      <span class="nav-logo-text">Nature's Touch</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="products.html" class="active">Products</a></li>
+      <li><a href="process.html">Process</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="nav-cart" onclick="window.location.href='cart.html'">🛒<span class="cart-badge"
+          style="display:none">0</span></button>
+      <button class="hamburger" title="Toggle navigation menu"
+        onclick="document.getElementById('navLinks').classList.toggle('open')"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <h1>Our Products</h1>
+    <p>Eco-friendly stationery, packaging & lifestyle products — all crafted from fallen trees and natural waste.</p>
+  </div>
+
+  <!-- FILTERS -->
+  <section class="filters-bar">
+    <div class="filter-group">
+      <button class="filter-btn active" data-cat="all">All Products</button>
+      <button class="filter-btn" data-cat="stationery">Stationery</button>
+      <button class="filter-btn" data-cat="packaging">Packaging</button>
+      <button class="filter-btn" data-cat="combo">Combo Kits</button>
+    </div>
+    <div class="sort-group">
+      <select id="sortSelect" onchange="applyFilters()">
+        <option value="default">Sort by: Featured</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="price-high">Price: High to Low</option>
+        <option value="name">Name: A–Z</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- PRODUCTS GRID -->
+  <section class="section" style="padding-top:32px">
+    <div id="productsGrid" class="products-grid"></div>
+  </section>
+
+  <!-- QUICK VIEW MODAL -->
+  <div class="modal-overlay" id="quickViewModal">
+    <div class="modal" style="max-width:700px">
+      <button class="modal-close" onclick="closeModal('quickViewModal')">X</button>
+      <div id="quickViewContent"></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>🌿 Nature's Touch</h3>
+        <p>Transforming fallen trees and natural waste into beautiful, sustainable products.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="products.html">All Products</a></li>
+          <li><a href="products.html?cat=stationery">Stationery</a></li>
+          <li><a href="products.html?cat=packaging">Packaging</a></li>
+          <li><a href="products.html?cat=combo">Combo Kits</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="process.html">Process</a></li>
+          <li><a href="report.html">Report Trees</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Account</h4>
+        <ul>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="signup.html">Sign Up</a></li>
+          <li><a href="cart.html">My Cart</a></li>
+          <li><a href="profile.html">My Orders</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 Nature's Touch.</span><span>Made with 💚</span></div>
+  </footer>
+
+  <div class="toast"></div>
+
+  <script src="../js/utils.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/cart.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    let activeCategory = 'all';
+
+    // Merge base products with any admin-added products
+    function getAllProducts() {
+      const extra = JSON.parse(localStorage.getItem('nt_extra_products') || '[]');
+      return [...PRODUCTS, ...extra];
+    }
+
+    // Check URL param
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('cat')) activeCategory = urlParams.get('cat');
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      if (btn.dataset.cat === activeCategory) btn.classList.add('active');
+      else btn.classList.remove('active');
+      btn.addEventListener('click', () => {
+        activeCategory = btn.dataset.cat;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        applyFilters();
+      });
+    });
+
+    function applyFilters() {
+      const all = getAllProducts();
+      let products = activeCategory === 'all' ? [...all] : all.filter(p => p.category === activeCategory);
+      const sort = document.getElementById('sortSelect').value;
+      if (sort === 'price-low') products.sort((a, b) => a.price - b.price);
+      else if (sort === 'price-high') products.sort((a, b) => b.price - a.price);
+      else if (sort === 'name') products.sort((a, b) => a.name.localeCompare(b.name));
+      document.getElementById('productsGrid').innerHTML = products.map(p => renderProductCard(p)).join('');
+    }
+
+    function quickView(id) {
+      const all = getAllProducts();
+      const p = all.find(x => x.id === id);
+      if (!p) return;
+      const imgSrc = p.img && p.img.startsWith('http') ? p.img : '../images/' + p.img;
+      document.getElementById('quickViewContent').innerHTML = `
+    <div class="qv-grid">
+      <div class="qv-img">
+        <img src="${imgSrc}" alt="${p.name}" style="width:100%;border-radius:12px;object-fit:cover;height:320px" onerror="this.style.background='var(--linen)'">
+      </div>
+      <div class="qv-info">
+        <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--sage)">${p.category}</span>
+        <h2 style="font-family:'Playfair Display',serif;font-size:26px;margin:8px 0 12px;color:var(--forest)">${p.name}</h2>
+        <p style="font-size:28px;font-weight:700;color:var(--bark);font-family:'Playfair Display',serif;margin-bottom:16px">₹${p.price}</p>
+        <p style="font-size:14px;line-height:1.7;color:#666;margin-bottom:20px">${p.desc || ''}</p>
+        <ul style="margin-bottom:24px;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px">
+          ${(p.features || []).map(f => `<li style="font-size:13px;color:#555;display:flex;align-items:center;gap:8px"><span style="color:var(--moss)">✓</span>${f}</li>`).join('')}
+        </ul>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button onclick="Cart.add({id:'${p.id}',name:'${p.name}',price:${p.price},image:'${imgSrc}',qty:1})" class="btn-secondary" style="flex:1;padding:12px 20px">🛒 Add to Cart</button>
+          <a href="checkout.html?id=${p.id}" class="btn-primary" style="flex:1;text-align:center;padding:12px 20px">Buy Now →</a>
+        </div>
+      </div>
+    </div>`;
+      document.getElementById('quickViewModal').classList.add('active');
+    }
+
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+    applyFilters();
+  </script>
+  <!-- <script src="../js/main.js"></script> -->
+</body>
+
+</html>

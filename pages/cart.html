@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart — Nature's Touch</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .cart-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 48px;
+    }
+
+    .cart-items-section {}
+
+    .cart-summary {
+      background: white;
+      border-radius: 20px;
+      padding: 32px;
+      height: fit-content;
+      position: sticky;
+      top: 110px;
+      box-shadow: 0 2px 20px rgba(26, 46, 26, 0.08);
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 100px 1fr auto;
+      gap: 20px;
+      align-items: center;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .cart-item img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 12px;
+      background: var(--linen);
+    }
+
+    .cart-item-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      color: var(--forest);
+      margin-bottom: 6px;
+    }
+
+    .cart-item-price {
+      font-size: 15px;
+      color: var(--bark);
+      font-weight: 600;
+    }
+
+    .qty-control {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border: 1.5px solid var(--light-gray);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 10px;
+      width: fit-content;
+    }
+
+    .qty-btn {
+      background: none;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--charcoal);
+      transition: background 0.2s;
+    }
+
+    .qty-btn:hover {
+      background: var(--linen);
+    }
+
+    .qty-val {
+      padding: 0 14px;
+      font-size: 14px;
+      font-weight: 600;
+      border-left: 1px solid var(--light-gray);
+      border-right: 1px solid var(--light-gray);
+      height: 36px;
+      display: flex;
+      align-items: center;
+    }
+
+    .remove-btn {
+      background: none;
+      border: none;
+      color: #ccc;
+      cursor: pointer;
+      font-size: 18px;
+      padding: 8px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .remove-btn:hover {
+      color: #e74c3c;
+      background: #fff0f0;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .summary-row:last-of-type {
+      border-bottom: none;
+    }
+
+    .summary-row .label {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .summary-row .val {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--charcoal);
+    }
+
+    .summary-total .label {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--forest);
+    }
+
+    .summary-total .val {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--bark);
+      font-family: 'Playfair Display', serif;
+    }
+
+    .empty-cart {
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    .empty-cart .icon {
+      font-size: 72px;
+      margin-bottom: 24px;
+    }
+
+    .empty-cart h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      color: var(--forest);
+      margin-bottom: 12px;
+    }
+
+    .empty-cart p {
+      color: #888;
+      margin-bottom: 32px;
+    }
+
+    @media (max-width:768px) {
+      .cart-layout {
+        grid-template-columns: 1fr;
+        padding: 20px;
+      }
+
+      .cart-summary {
+        position: static;
+      }
+
+      .cart-item {
+        grid-template-columns: 80px 1fr auto;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="../css/pages.css">
+</head>
+
+<body>
+
+  <nav>
+    <div class="nav-auth-left">
+      <a href="login.html" class="btn-primary btn-primary-sm" id="authBtn">Login / Sign Up</a>
+      <a href="admin.html" class="btn-primary btn-primary-sm" id="adminBtn"
+        style="display:none;background:var(--earth)">⚙️ Admin</a>
+    </div>
+    <a href="../index.html" class="nav-logo">
+      <div class="nav-logo-icon">🌿</div>
+      <span class="nav-logo-text">Nature's Touch</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html" class="active">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="process.html">Process</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="nav-cart" onclick="window.location.href='cart.html'">🛒<span class="cart-badge"
+          style="display:none">0</span></button>
+      <button class="hamburger" title="Toggle navigation menu"
+        onclick="document.getElementById('navLinks').classList.toggle('open')"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="page-hero" style="padding:60px 48px 40px">
+    <h1>My Cart</h1>
+    <p>Review your items and proceed to checkout</p>
+  </div>
+
+  <div class="cart-layout" id="cartLayout"></div>
+
+  <div class="toast"></div>
+
+  <script src="../js/utils.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/cart.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    function renderCart() {
+      const items = Cart.get();
+      const layout = document.getElementById('cartLayout');
+
+      if (items.length === 0) {
+        layout.innerHTML = `<div class="empty-cart" style="grid-column:1/-1"><div class="icon">🛒</div><h3>Your cart is empty</h3><p>Browse our eco-friendly products and add something you love.</p><a href="products.html" class="btn-primary">Shop Now</a></div>`;
+        return;
+      }
+
+      const subtotal = Cart.total();
+      const shipping = subtotal > 500 ? 0 : 49;
+      const total = subtotal + shipping;
+
+      layout.innerHTML = `
+    <div class="cart-items-section">
+      <h2 style="font-family:'Playfair Display',serif;font-size:22px;color:var(--forest);margin-bottom:8px">${items.length} Item${items.length > 1 ? 's' : ''}</h2>
+      <p style="font-size:13px;color:#888;margin-bottom:0">${subtotal > 500 ? '🎉 Free shipping on this order!' : `Add ₹${500 - subtotal} more for free shipping`}</p>
+      <div id="itemsList">
+        ${items.map(item => `
+          <div class="cart-item" id="ci-${item.id}">
+            <img src="${item.image ? '../images/' + item.img : '../images/default.png'}" alt="${item.name}">
+            <div>
+              <div class="cart-item-name">${item.name}</div>
+              <div class="cart-item-price">₹${item.price} each</div>
+              <div class="qty-control">
+                <button class="qty-btn" onclick="changeQty('${item.id}', ${item.qty - 1})">−</button>
+                <span class="qty-val">${item.qty}</span>
+                <button class="qty-btn" onclick="changeQty('${item.id}', ${item.qty + 1})">+</button>
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:18px;font-weight:700;color:var(--bark);font-family:'Playfair Display',serif;margin-bottom:8px">₹${item.price * item.qty}</div>
+              <button class="remove-btn" onclick="removeItem('${item.id}')">✕</button>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    <div class="cart-summary">
+      <h3 style="font-family:'Playfair Display',serif;font-size:20px;color:var(--forest);margin-bottom:24px">Order Summary</h3>
+      <div class="summary-row"><span class="label">Subtotal</span><span class="val">₹${subtotal}</span></div>
+      <div class="summary-row"><span class="label">Shipping</span><span class="val">${shipping === 0 ? '<span style="color:var(--moss)">FREE</span>' : '₹' + shipping}</span></div>
+      <div class="summary-row"><span class="label">Tax (GST 5%)</span><span class="val">₹${Math.round(subtotal * 0.05)}</span></div>
+      <div class="summary-row summary-total" style="margin-top:16px;padding-top:16px;border-top:2px solid var(--forest)"><span class="label">Total</span><span class="val">₹${Math.round(total + subtotal * 0.05)}</span></div>
+      <a href="checkout.html" class="btn-primary" style="display:block;text-align:center;padding:16px;font-size:16px;margin-top:24px;border-radius:12px">Proceed to Checkout →</a>
+      <a href="products.html" class="btn-secondary" style="display:block;text-align:center;padding:12px;margin-top:12px;border-radius:12px">Continue Shopping</a>
+      <div style="text-align:center;margin-top:20px;font-size:12px;color:#aaa">🔒 Secure checkout • Free returns</div>
+    </div>`;
+    }
+
+    function changeQty(id, qty) {
+      Cart.updateQty(id, qty);
+      renderCart();
+    }
+
+    function removeItem(id) {
+      Cart.remove(id);
+      showToast('🗑️ Item removed');
+      renderCart();
+    }
+
+    renderCart();
+  </script>
+  <script>
+    if (!localStorage.getItem("token")) {
+      alert("Please login first");
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+
+</html>

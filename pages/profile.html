@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account — Nature's Touch</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .profile-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 32px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 48px;
+    }
+
+    .profile-sidebar {
+      background: white;
+      border-radius: 20px;
+      padding: 28px;
+      height: fit-content;
+      box-shadow: 0 2px 16px rgba(26, 46, 26, 0.06);
+    }
+
+
+
+    .dp-menu {
+      display: none;
+      position: absolute;
+      bottom: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      border-radius: 10px;
+      padding: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      gap: 5px;
+    }
+
+    .profile-avatar:hover .dp-menu {
+      display: flex;
+    }
+
+    .dp-menu button {
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 16px;
+      position: relative;
+    }
+
+    .profile-avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+      border: 3px solid var(--forest);
+      transition: 0.3s;
+    }
+
+    .profile-avatar img:hover {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+
+    .profile-name {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      color: var(--forest);
+      margin-bottom: 4px;
+    }
+
+    .profile-email {
+      text-align: center;
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 24px;
+    }
+
+    .profile-menu {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .profile-menu a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      color: #666;
+      transition: all 0.2s;
+    }
+
+    .profile-menu a:hover,
+    .profile-menu a.active {
+      background: var(--linen);
+      color: var(--forest);
+    }
+
+    .profile-menu .logout-link {
+      color: #e74c3c;
+      margin-top: 16px;
+    }
+
+    .page-hero {
+      padding: 60px 48px 40px;
+    }
+
+    .content-section {
+      background: white;
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 2px 16px rgba(26, 46, 26, 0.06);
+      margin-bottom: 20px;
+    }
+
+    .content-section h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      color: var(--forest);
+      margin-bottom: 24px;
+    }
+
+    .order-card {
+      border: 1.5px solid var(--light-gray);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .order-id {
+      font-weight: 700;
+      color: var(--forest);
+      font-size: 15px;
+    }
+
+    .order-date {
+      font-size: 13px;
+      color: #888;
+    }
+
+    .status-badge {
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-badge.processing {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .status-badge.shipped {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status-badge.delivered {
+      background: #d1ecf1;
+      color: #0c5460;
+    }
+
+    .order-items-mini {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .order-item-mini {
+      background: var(--warm-white);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 13px;
+      color: #666;
+    }
+
+    .order-total {
+      font-weight: 700;
+      color: var(--bark);
+      font-family: 'Playfair Display', serif;
+    }
+
+    .tab-hidden {
+      display: none;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--forest);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid var(--light-gray);
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .report-card {
+      border: 1.5px solid var(--light-gray);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .report-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .report-title {
+      font-weight: 600;
+      color: var(--forest);
+    }
+
+    .report-meta {
+      font-size: 13px;
+      color: #888;
+    }
+
+    .report-status {
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .empty-message {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .empty-title {
+      font-family: 'Playfair Display', serif;
+      color: var(--forest);
+      margin-bottom: 8px;
+    }
+
+    .empty-text {
+      color: #888;
+      margin-bottom: 20px;
+    }
+
+    .btn-primary {
+      padding: 12px 28px;
+    }
+
+    .submit-report-btn {
+      margin-top: 16px;
+      display: inline-block;
+    }
+
+    @media (max-width:768px) {
+      .profile-layout {
+        grid-template-columns: 1fr;
+        padding: 20px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="../css/pages.css">
+</head>
+
+<body>
+  <nav>
+    <div class="nav-auth-left">
+      <a href="login.html" class="btn-primary btn-primary-sm" id="authBtn">Login / Sign Up</a>
+      <a href="admin.html" class="btn-primary btn-primary-sm" id="adminBtn"
+        style="display:none;background:var(--earth)">⚙️ Admin</a>
+    </div>
+    <a href="../index.html" class="nav-logo">
+      <div class="nav-logo-icon">🌿</div>
+      <span class="nav-logo-text">Nature's Touch</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html" class="active">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="process.html">Process</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="nav-cart" onclick="window.location.href='cart.html'">🛒<span class="cart-badge"
+          style="display:none">0</span></button>
+      <button class="hamburger" title="Toggle navigation menu"
+        onclick="document.getElementById('navLinks').classList.toggle('open')"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <h1>My Account</h1>
+    <p>Track orders, manage your profile and view reports</p>
+  </div>
+
+  <div class="profile-layout">
+    <div class="profile-sidebar">
+      <div class="profile-avatar">
+        <img id="profileImg" onerror="this.src='../images/default-avatar.png'">
+        <div class="dp-menu">
+          <button onclick="viewDP()">👁 View</button>
+          <button onclick="triggerUpload()">🔄 Update</button>
+          <button onclick="removeDP()">❌ Remove</button>
+        </div>
+        <input type="file" id="fileInput" accept="image/*" hidden />
+      </div>
+      <div class="profile-name" id="profileName">Loading...</div>
+      <div class="profile-email" id="profileEmail"></div>
+      <ul class="profile-menu">
+        <li><a href="#" class="active" onclick="return showTab('orders',this)">📦 My Orders</a></li>
+        <li><a href="#" onclick="return showTab('reports',this)">🌳 My Reports</a></li>
+        <li><a href="#" onclick="return showTab('settings',this)">⚙️ Account Settings</a></li>
+        <li><a href="#" onclick="Auth.logout()" class="logout-link">🚪 Logout</a></li>
+      </ul>
+    </div>
+
+    <div class="profile-content">
+      <!-- ORDERS -->
+      <div id="tab-orders">
+        <div class="content-section">
+          <h3>My Orders</h3>
+          <div id="ordersContent"></div>
+        </div>
+      </div>
+
+      <!-- REPORTS -->
+      <div id="tab-reports" class="tab-hidden">
+        <div class="content-section">
+          <h3>My Tree Reports</h3>
+          <div id="reportsContent"></div>
+          <a href="report.html" class="btn-primary submit-report-btn">+ Submit New Report</a>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div id="tab-settings" class="tab-hidden">
+        <div class="content-section">
+          <h3>Account Settings</h3>
+          <div class="form-group"><label>Full Name</label><input type="text" id="settingName"></div>
+          <div class="form-group"><label>Email</label><input type="email" id="settingEmail" readonly></div>
+          <button class="btn-primary" onclick="saveSettings()">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div id="editModal"
+    style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:9999;justify-content:center;align-items:center;">
+
+    <div style="background:white;padding:20px;border-radius:12px;width:90%;max-width:400px;">
+
+      <h3>Edit Report</h3>
+
+      <input id="editName" placeholder="Name" style="width:100%;margin-bottom:10px;padding:8px;">
+      <input id="editContact" placeholder="Contact" style="width:100%;margin-bottom:10px;padding:8px;">
+      <input id="editLocation" placeholder="Location" style="width:100%;margin-bottom:10px;padding:8px;">
+      <textarea id="editDesc" placeholder="Description" style="width:100%;margin-bottom:10px;padding:8px;"></textarea>
+
+      <input type="file" id="editImage" style="margin-bottom:10px;">
+
+      <div style="display:flex;justify-content:space-between;">
+        <button onclick="closeEditModal()"
+          style="background:#ccc;padding:8px 12px;border:none;border-radius:6px;">Cancel</button>
+        <button onclick="saveEdit()"
+          style="background:#27ae60;color:white;padding:8px 12px;border:none;border-radius:6px;">Save</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="toast"></div>
+  <script src="../js/utils.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/cart.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    function checkAuth() {
+      const session = Auth.getSession();
+      if (!session) { window.location.href = 'login.html?redirect=profile.html'; return; }
+      document.getElementById('profileName').textContent = session.name;
+      document.getElementById('profileEmail').textContent = session.email;
+      document.getElementById('settingName').value = session.name;
+      document.getElementById('settingEmail').value = session.email;
+    }
+
+    function showTab(tab, link) {
+      ['orders', 'reports', 'settings'].forEach(t => {
+        document.getElementById('tab-' + t).style.display = 'none';
+      });
+      document.getElementById('tab-' + tab).style.display = 'block';
+      document.querySelectorAll('.profile-menu a').forEach(a => a.classList.remove('active'));
+      if (link) link.classList.add('active');
+      loadTabContent(tab);
+      return false;
+    }
+
+    function loadTabContent(tab) {
+      if (tab === 'orders') {
+        const session = Auth.getSession();
+        const allOrders = Orders.get().filter(o => o.userId === session?.email);
+        if (allOrders.length === 0) {
+          document.getElementById('ordersContent').innerHTML = `<div style="text-align:center;padding:40px 20px"><div style="font-size:48px;margin-bottom:16px">📦</div><h4 style="font-family:'Playfair Display',serif;color:var(--forest);margin-bottom:8px">No orders yet</h4><p style="color:#888;margin-bottom:20px">Your order history will appear here.</p><a href="products.html" class="btn-primary">Start Shopping</a></div>`;
+        } else {
+          document.getElementById('ordersContent').innerHTML = [...allOrders].reverse().map(o => `
+        <div class="order-card">
+          <div class="order-header">
+            <div>
+              <div class="order-id">${o.id}</div>
+              <div class="order-date">Placed on ${o.date}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <span class="status-badge processing">${o.status}</span>
+              <span class="order-total">₹${o.total}</span>
+            </div>
+          </div>
+          <div class="order-items-mini">${o.items.map(i => `<span class="order-item-mini">${i.name} ×${i.qty}</span>`).join('')}</div>
+          <div style="font-size:13px;color:#888">📍 ${o.shipping?.address || 'N/A'}</div>
+        </div>`).join('');
+        }
+      } else if (tab === 'reports') {
+        const session = Auth.getSession();
+        const allReports = JSON.parse(localStorage.getItem('nt_reports') || '[]');
+        // Filter to reports matching user's name or contact (best effort since reports store name not userId)
+        const userReports = allReports.filter(r =>
+          r.contact === session?.email || r.name === session?.name || r._userId === session?.email
+        );
+        const displayReports = userReports.length > 0 ? userReports : [];
+        if (displayReports.length === 0) {
+          document.getElementById('reportsContent').innerHTML = `<div style="text-align:center;padding:30px 0;color:#888"><div style="font-size:40px;margin-bottom:12px">🌳</div><p>No reports submitted yet.<br>Help us by reporting fallen trees near you!</p></div>`;
+        } else {
+          document.getElementById('reportsContent').innerHTML = [...displayReports].reverse().map((r, index) => `
+  <div style="border:1.5px solid var(--light-gray);border-radius:12px;padding:16px;margin-bottom:16px">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+      <div>
+        <div style="font-weight:600;color:var(--forest);font-size:16px">${r.type}</div>
+        <div style="font-size:13px;color:#888">${r.location} · ${r.date}</div>
+      </div>
+
+      <span style="padding:4px 12px;border-radius:100px;font-size:12px;font-weight:600;
+        background:${r.status === 'Collected' ? '#d4edda;color:#155724'
+              : r.status === 'Approved' ? '#d1ecf1;color:#0c5460'
+                : '#fff3cd;color:#856404'}">
+        ${r.status}
+      </span>
+    </div>
+
+    <p style="margin-top:8px;">📞 ${r.contact}</p>
+    <p>📝 ${r.desc || "No description"}</p>
+
+    ${r.image
+              ? `<img src="${r.image}" onclick="previewImage('${r.image}')"
+          style="margin-top:10px;width:100%;max-height:250px;object-fit:cover;border-radius:10px;cursor:pointer;">`
+              : ""
+            }
+
+    <div style="margin-top:12px;display:flex;gap:10px;">
+      <button onclick="deleteReport(${index})" style="padding:6px 12px;background:#e74c3c;color:white;border:none;border-radius:6px;cursor:pointer">Delete</button>
+      <button onclick="editReport(${index})" style="padding:6px 12px;background:#3498db;color:white;border:none;border-radius:6px;cursor:pointer">Edit</button>
+    </div>
+
+  </div>
+`).join('');
+        }
+      }
+    }
+
+    function saveSettings() {
+      const name = document.getElementById('settingName').value.trim();
+      const session = Auth.getSession();
+      if (session && name) {
+        session.name = name;
+        localStorage.setItem('nt_session', JSON.stringify(session));
+        document.getElementById('profileName').textContent = name;
+        showToast('✅ Settings saved!');
+      }
+    }
+
+
+
+
+
+
+    function loadUserReports() {
+      const reports = JSON.parse(localStorage.getItem("nt_reports") || "[]");
+      const session = Auth.getSession();
+      const container = document.getElementById("reportsContent");
+
+      if (!container) return;
+
+      container.innerHTML = "";
+
+      // 🔥 Filter only logged-in user reports
+      const userReports = reports.filter(r => r._userId === session?.email);
+
+      if (userReports.length === 0) {
+        container.innerHTML = "<p>No reports submitted yet.</p>";
+        return;
+      }
+
+      userReports.forEach(r => {
+        const card = document.createElement("div");
+
+        card.style.cssText = `
+      background:white;
+      padding:16px;
+      margin-bottom:16px;
+      border-radius:12px;
+      box-shadow:0 4px 20px rgba(0,0,0,0.08);
+    `;
+
+        card.innerHTML = `
+      <h4 style="margin-bottom:8px;">🌳 ${r.type}</h4>
+
+      <p><strong>📍 Location:</strong> ${r.location}</p>
+      <p><strong>📞 Contact:</strong> ${r.contact}</p>
+      <p><strong>📝 Description:</strong> ${r.desc || "N/A"}</p>
+
+      ${r.image
+            ? `<img src="${r.image}" style="margin-top:10px;max-width:100%;border-radius:10px;">`
+            : ""
+          }
+
+      <p style="margin-top:10px;font-size:12px;color:gray;">
+        📅 ${r.date} | Status: ${r.status}
+      </p>
+    `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function previewImage(src) {
+      const modal = document.createElement("div");
+
+      modal.style.cssText = `
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:rgba(0,0,0,0.8);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+  `;
+
+      modal.innerHTML = `
+    <img src="${src}" style="max-width:90%;max-height:90%;border-radius:12px;">
+  `;
+
+      modal.onclick = () => modal.remove();
+
+      document.body.appendChild(modal);
+    }
+
+
+    function deleteReport(index) {
+      const reports = JSON.parse(localStorage.getItem("nt_reports") || "[]");
+
+      if (!confirm("Delete this report?")) return;
+
+      reports.splice(index, 1);
+
+      localStorage.setItem("nt_reports", JSON.stringify(reports));
+
+      loadTabContent('reports'); // refresh UI
+    }
+
+
+    function editReport(index) {
+      const reports = JSON.parse(localStorage.getItem("nt_reports") || "[]");
+
+      const newDesc = prompt("Edit description:", reports[index].desc);
+
+      if (newDesc !== null) {
+        reports[index].desc = newDesc;
+
+        localStorage.setItem("nt_reports", JSON.stringify(reports));
+
+        loadTabContent('reports');
+      }
+    }
+
+    let editIndex = null;
+
+    function editReport(index) {
+      const reports = JSON.parse(localStorage.getItem("nt_reports") || "[]");
+      const r = reports[index];
+
+      editIndex = index;
+
+      document.getElementById("editName").value = r.name || "";
+      document.getElementById("editContact").value = r.contact || "";
+      document.getElementById("editLocation").value = r.location || "";
+      document.getElementById("editDesc").value = r.desc || "";
+
+      document.getElementById("editModal").style.display = "flex";
+    }
+
+    function closeEditModal() {
+      document.getElementById("editModal").style.display = "none";
+    }
+
+    function saveEdit() {
+      const reports = JSON.parse(localStorage.getItem("nt_reports") || "[]");
+
+      const fileInput = document.getElementById("editImage");
+      const file = fileInput.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          updateReport(e.target.result);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        updateReport(null);
+      }
+
+      function updateReport(newImage) {
+        reports[editIndex].name = document.getElementById("editName").value;
+        reports[editIndex].contact = document.getElementById("editContact").value;
+        reports[editIndex].location = document.getElementById("editLocation").value;
+        reports[editIndex].desc = document.getElementById("editDesc").value;
+
+        if (newImage) {
+          reports[editIndex].image = newImage;
+        }
+
+        localStorage.setItem("nt_reports", JSON.stringify(reports));
+
+        closeEditModal();
+        loadTabContent('reports');
+      }
+    }
+
+
+
+    // // 🚀 LOAD ON PAGE
+    // document.addEventListener("DOMContentLoaded", loadUserReports);
+
+    checkAuth();
+    loadTabContent('orders');
+
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+      const profileImg = document.getElementById("profileImg");
+      const fileInput = document.getElementById("fileInput");
+
+      // safety check
+      if (!profileImg || !fileInput) {
+        console.log("❌ Elements not found");
+        return;
+      }
+
+      // click image → open file picker
+      profileImg.addEventListener("click", () => {
+        fileInput.click();
+      });
+
+      fileInput.addEventListener("change", async function () {
+        try {
+          const file = this.files[0];
+          if (!file) return;
+
+          const formData = new FormData();
+          formData.append("image", file);
+
+          const user = JSON.parse(localStorage.getItem("nt_session"));
+
+          const res = await fetch("http://localhost:5000/api/user/upload-photo", {
+            method: "POST",
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+              email: user.email
+            },
+            body: formData
+          });
+
+          const data = await res.json();
+
+          console.log("UPLOAD RESPONSE:", data); // 🔥 debug
+
+          if (data.success) {
+            profileImg.src = data.imageUrl;
+          } else {
+            alert("Upload failed");
+          }
+
+        } catch (err) {
+          console.error("❌ ERROR:", err);
+          alert("Server error");
+        }
+      });
+
+    });
+
+  </script>
+
+  <script>
+    function viewDP() {
+      const img = document.getElementById("profileImg").src;
+
+      const modal = document.createElement("div");
+
+      modal.style.cssText = `
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:rgba(0,0,0,0.8);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  `;
+
+      modal.innerHTML = `<img src="${img}" style="max-width:90%;max-height:90%;border-radius:12px;">`;
+
+      modal.onclick = () => modal.remove();
+
+      document.body.appendChild(modal);
+    }
+
+
+    function triggerUpload() {
+      document.getElementById("fileInput").click();
+    }
+
+
+    async function removeDP() {
+      if (!confirm("Remove profile picture?")) return;
+
+      const user = JSON.parse(localStorage.getItem("nt_session"));
+
+      await fetch("http://localhost:5000/api/user/remove-photo", {
+        method: "POST",
+        headers: {
+          email: user.email
+        }
+      });
+
+      document.getElementById("profileImg").src = "https://via.placeholder.com/120";
+    }
+
+  </script>
+
+  <!-- <script src="../js/main.js"></script> -->
+</body>
+
+</html>

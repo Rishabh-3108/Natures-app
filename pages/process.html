@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Process — Nature's Touch</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .process-timeline {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .process-step-big {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 32px;
+      margin-bottom: 64px;
+      align-items: start;
+    }
+
+    .step-num-big {
+      width: 80px;
+      height: 80px;
+      background: var(--forest);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+    }
+
+    .step-content h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      color: var(--forest);
+      margin-bottom: 12px;
+    }
+
+    .step-content p {
+      font-size: 15px;
+      color: #666;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .step-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .step-tag {
+      background: var(--linen);
+      color: var(--moss);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 100px;
+    }
+
+    .methods-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .method-card {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      border-left: 4px solid var(--moss);
+      box-shadow: 0 2px 12px rgba(26, 46, 26, 0.06);
+    }
+
+    .method-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      color: var(--forest);
+      margin-bottom: 10px;
+    }
+
+    .method-card p {
+      font-size: 14px;
+      color: #888;
+      line-height: 1.7;
+    }
+
+    @media (max-width:600px) {
+      .process-step-big {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .step-num-big {
+        width: 56px;
+        height: 56px;
+        font-size: 20px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="../css/pages.css">
+</head>
+
+<body>
+  <nav>
+    <div class="nav-auth-left">
+      <a href="login.html" class="btn-primary btn-primary-sm" id="authBtn">Login / Sign Up</a>
+      <a href="../Admin/admin.html" class="btn-primary btn-primary-sm" id="adminBtn"
+        style="display:none;background:var(--earth)">⚙️ Admin</a>
+    </div>
+    <a href="../index.html" class="nav-logo">
+      <div class="nav-logo-icon">🌿</div>
+      <span class="nav-logo-text">Nature's Touch</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="process.html" class="active">Process</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="nav-cart" onclick="window.location.href='cart.html'">🛒<span class="cart-badge"
+          style="display:none">0</span></button>
+      <button class="hamburger" title="Toggle navigation menu"
+        onclick="document.getElementById('navLinks').classList.toggle('open')"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <h1>Our Sustainable Process</h1>
+    <p>From fallen tree to finished product — every step guided by environmental responsibility.</p>
+  </div>
+
+  <section class="section">
+    <div class="process-timeline">
+      <div class="process-step-big reveal">
+        <div class="step-num-big">1</div>
+        <div class="step-content">
+          <h3>Collection of Fallen Trees</h3>
+          <p>Our team collaborates with local authorities, NGOs, and community volunteers to identify and collect fallen
+            trees and branches — especially those from storm-damaged or disaster-affected areas. We also receive reports
+            from citizens through our website's Report feature.</p>
+          <p>Materials collected include fallen branches, leaves, bark, and wood scraps. No healthy trees are ever cut.
+          </p>
+          <div class="step-tags"><span class="step-tag">NGO Partnerships</span><span class="step-tag">Community
+              Volunteers</span><span class="step-tag">Zero Deforestation</span></div>
+        </div>
+      </div>
+      <div class="process-step-big reveal">
+        <div class="step-num-big">2</div>
+        <div class="step-content">
+          <h3>Transportation & Logistics</h3>
+          <p>Collected materials are carefully transported to our central processing facility using eco-efficient
+            vehicles. We batch deliveries to minimize carbon emissions and work with local logistics partners to reduce
+            the supply chain footprint.</p>
+          <div class="step-tags"><span class="step-tag">Batch Logistics</span><span class="step-tag">Emission
+              Reduction</span><span class="step-tag">Local Partners</span></div>
+        </div>
+      </div>
+      <div class="process-step-big reveal">
+        <div class="step-num-big">3</div>
+        <div class="step-content">
+          <h3>Sorting & Segregation</h3>
+          <p>At the facility, materials are sorted by type — wood, leaves, bark, and fibres. Segregation ensures the
+            right materials go into the right products. Metals, plastics and non-organic items are separated out for
+            proper disposal or recycling.</p>
+          <div class="step-tags"><span class="step-tag">Manual Sorting</span><span class="step-tag">Quality
+              Selection</span><span class="step-tag">Waste Segregation</span></div>
+        </div>
+      </div>
+      <div class="process-step-big reveal">
+        <div class="step-num-big">4</div>
+        <div class="step-content">
+          <h3>Shredding & Pulping</h3>
+          <p>Wood and organic matter are shredded and pulped using our blending method — combining natural materials to
+            create smooth, durable base sheets. We use water-based processing and avoid harmful chemicals, ensuring our
+            pulp is non-toxic and eco-standard compliant.</p>
+          <div class="step-tags"><span class="step-tag">Blending Method</span><span
+              class="step-tag">Chemical-Free</span><span class="step-tag">Eco-Standard Compliant</span></div>
+        </div>
+      </div>
+      <div class="process-step-big reveal">
+        <div class="step-num-big">5</div>
+        <div class="step-content">
+          <h3>Product Manufacturing</h3>
+          <p>Processed pulp is shaped into sheets, bags, calendars, notebooks, and more. Our artisans combine
+            traditional craftsmanship with modern eco-design to create products that are beautiful, durable, and fully
+            biodegradable. Seed papers are embedded with herb and flower seeds at this stage.</p>
+          <div class="step-tags"><span class="step-tag">Handcrafted</span><span class="step-tag">Seed
+              Embedding</span><span class="step-tag">Eco Inks</span><span class="step-tag">Biodegradable</span></div>
+        </div>
+      </div>
+      <div class="process-step-big reveal">
+        <div class="step-num-big">6</div>
+        <div class="step-content">
+          <h3>Quality Check & Packaging</h3>
+          <p>Every product goes through a rigorous quality check for strength, finish, print quality, and eco-standard
+            compliance. Products are then packaged in our own eco-friendly kraft paper packaging — no plastic, no
+            styrofoam.</p>
+          <div class="step-tags"><span class="step-tag">Quality Assurance</span><span class="step-tag">Kraft
+              Packaging</span><span class="step-tag">Zero Plastic</span></div>
+        </div>
+      </div>
+      <div class="process-step-big reveal">
+        <div class="step-num-big">7</div>
+        <div class="step-content">
+          <h3>Delivery & Community Reinvestment</h3>
+          <p>Orders are delivered to your doorstep. A portion of every sale is reinvested into community reforestation
+            efforts and awareness workshops. We also track environmental impact metrics — trees saved, waste diverted,
+            and CO₂ prevented — and publish them transparently.</p>
+          <div class="step-tags"><span class="step-tag">Eco Delivery</span><span class="step-tag">Reforestation
+              Fund</span><span class="step-tag">Impact Tracking</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:var(--linen)">
+    <div class="reveal" style="text-align:center;max-width:600px;margin:0 auto 48px">
+      <div class="badge">Methods We Use</div>
+      <h2 class="section-title">Science Behind Our Craft</h2>
+    </div>
+    <div class="methods-grid">
+      <div class="method-card reveal">
+        <h4>🔀 Blending Method</h4>
+        <p>Combining different natural fibres (wood pulp + leaf fibre + bark) in optimal ratios to create smooth,
+          durable eco-sheets with consistent texture and strength.</p>
+      </div>
+      <div class="method-card reveal">
+        <h4>♻️ Recycling Method</h4>
+        <p>Reusing fallen leaves, bark, and wood scraps through a clean pulping process — minimising waste at every step
+          and maximising material utilisation.</p>
+      </div>
+      <div class="method-card reveal">
+        <h4>🌱 Seed Embedding</h4>
+        <p>Wildflower, herb, and vegetable seeds are pressed into our plantable paper products during manufacturing,
+          giving the paper a second life after use.</p>
+      </div>
+      <div class="method-card reveal">
+        <h4>📐 Eco-Standard Compliance</h4>
+        <p>All products are tested against material composition standards, eco-ink regulations, and sheet dimension
+          specifications for market-ready quality.</p>
+      </div>
+      <div class="method-card reveal">
+        <h4>🧪 Sustainability Analysis</h4>
+        <p>We conduct life-cycle analysis on every product to understand and minimise environmental impact from
+          collection to disposal.</p>
+      </div>
+      <div class="method-card reveal">
+        <h4>🔬 Testing & QA</h4>
+        <p>Measurement and testing techniques assess product strength, quality, and finish — ensuring every item meets
+          our durability and usability benchmarks.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>🌿 Nature's Touch</h3>
+        <p>Transforming fallen trees and natural waste into beautiful, sustainable products.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="products.html">All Products</a></li>
+          <li><a href="products.html?cat=stationery">Stationery</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="process.html">Our Process</a></li>
+          <li><a href="report.html">Report Trees</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Account</h4>
+        <ul>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 Nature's Touch.</span><span>Made with 💚</span></div>
+  </footer>
+  <div class="toast"></div>
+  <script src="../js/utils.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/cart.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+
+</html>

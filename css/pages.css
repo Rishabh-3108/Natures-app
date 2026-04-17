@@ -1,0 +1,42 @@
+/* ============ SHARED PAGE STYLES (pages.css) ============ */
+
+/* ---- Page Hero ---- */
+.page-hero {
+  background: linear-gradient(135deg, var(--forest) 0%, #2a4a2a 100%);
+  padding: 120px 48px 64px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("../images/page-hero.jpg") center/cover;
+  opacity: 0.15;
+  mix-blend-mode: overlay;
+  z-index: 0;
+}
+
+.page-hero h1 {
+  font-size: clamp(32px, 5vw, 56px);
+  color: white;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.page-hero p {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.75);
+  max-width: 520px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ---- Responsive page hero ---- */
+@media (max-width: 768px) {
+  .page-hero {
+    padding: 100px 24px 48px;
+  }
+}

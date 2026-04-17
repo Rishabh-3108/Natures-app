@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Nature's Touch</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.contact-layout { display:grid;grid-template-columns:1fr 1.3fr;gap:64px;align-items:start; }
+.contact-info h2 { font-family:'Playfair Display',serif;font-size:32px;color:var(--forest);margin-bottom:16px; }
+.contact-info p { font-size:15px;color:#888;line-height:1.8;margin-bottom:32px; }
+.contact-item { display:flex;gap:16px;align-items:flex-start;margin-bottom:24px; }
+.contact-icon { width:48px;height:48px;background:var(--linen);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0; }
+.contact-item h4 { font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--sage);margin-bottom:4px; }
+.contact-item p { font-size:14px;color:#666;line-height:1.6;margin:0; }
+.contact-form-card { background:white;border-radius:20px;padding:40px;box-shadow:0 4px 32px rgba(26,46,26,0.08); }
+.contact-form-card h3 { font-family:'Playfair Display',serif;font-size:22px;color:var(--forest);margin-bottom:24px; }
+@media (max-width:768px) { .contact-layout { grid-template-columns:1fr; } }
+</style>
+<link rel="stylesheet" href="../css/pages.css">
+</head>
+<body>
+<nav>
+  <div class="nav-auth-left">
+    <a href="login.html" class="btn-primary btn-primary-sm" id="authBtn">Login / Sign Up</a>
+    <a href="admin.html" class="btn-primary btn-primary-sm" id="adminBtn" style="display:none;background:var(--earth)">⚙️ Admin</a>
+  </div>
+  <a href="../index.html" class="nav-logo">
+    <div class="nav-logo-icon">🌿</div>
+    <span class="nav-logo-text">Nature's Touch</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="products.html">Products</a></li>
+    <li><a href="process.html">Process</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="nav-cart" onclick="window.location.href='cart.html'">🛒<span class="cart-badge" style="display:none">0</span></button>
+    <button class="hamburger" title="Toggle navigation menu" onclick="document.getElementById('navLinks').classList.toggle('open')"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <h1>Get in Touch</h1>
+  <p>Have questions, want to partner, or just want to say hello? We'd love to hear from you.</p>
+</div>
+
+<section class="section">
+  <div class="contact-layout">
+    <div class="contact-info reveal">
+      <h2>Let's Start a Conversation</h2>
+      <p>Whether you're looking to bulk order, partner with us, report fallen trees, or just want to know more about our mission — reach out. We respond within 24 hours.</p>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div><h4>Address</h4><p>SAL Education Campus,<br>Ahmedabad, Gujarat — 380001</p></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📧</div>
+        <div><h4>Email</h4><p><a href="mailto:hello@naturestouch.com">hello@naturestouch.com</a><br><a href="mailto:support@naturestouch.com">support@naturestouch.com</a></p></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div><h4>Phone</h4><p>+91 98765 43210<br>Mon–Sat, 9am–6pm</p></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🌐</div>
+        <div><h4>Social</h4><p>@NaturesTouchIndia<br>Instagram • LinkedIn • Twitter</p></div>
+      </div>
+    </div>
+    <div class="contact-form-card reveal">
+      <h3>Send Us a Message</h3>
+      <div id="formSuccess" style="display:none;background:#f0fff4;border:1px solid #c3e6cb;border-radius:10px;padding:14px;margin-bottom:20px;font-size:14px;color:#155724">✅ Your message has been sent! We'll get back to you within 24 hours.</div>
+      <div class="form-group"><label>Your Name</label><input type="text" id="cName" placeholder="Arjun Sharma"></div>
+      <div class="form-group"><label>Email Address</label><input type="email" id="cEmail" placeholder="arjun@email.com"></div>
+      <div class="form-group"><label>Subject</label>
+        <select id="cSubject">
+          <option value="">Select a subject...</option>
+          <option>General Enquiry</option>
+          <option>Bulk Order / Partnership</option>
+          <option>Product Question</option>
+          <option>Shipping & Returns</option>
+          <option>Report Fallen Trees</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Message</label><textarea id="cMsg" rows="5" placeholder="Tell us how we can help..."></textarea></div>
+      <button class="btn-primary" style="width:100%;padding:14px;font-size:15px" onclick="sendMessage()">Send Message →</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand"><h3>🌿 Nature's Touch</h3><p>Transforming fallen trees and natural waste into beautiful, sustainable products.</p></div>
+    <div class="footer-col"><h4>Shop</h4><ul><li><a href="products.html">All Products</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About Us</a></li><li><a href="process.html">Process</a></li></ul></div>
+    <div class="footer-col"><h4>Account</h4><ul><li><a href="login.html">Login</a></li><li><a href="signup.html">Sign Up</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span>© 2025 Nature's Touch.</span><span>Made with 💚</span></div>
+</footer>
+<div class="toast"></div>
+<script src="../js/utils.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/cart.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/main.js"></script>
+<script>
+function sendMessage() {
+  const name = document.getElementById('cName').value.trim();
+  const email = document.getElementById('cEmail').value.trim();
+  const subject = document.getElementById('cSubject').value;
+  const msg = document.getElementById('cMsg').value.trim();
+  if (!name || !email || !msg) { showToast('⚠️ Please 

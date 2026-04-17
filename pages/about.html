@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Nature's Touch</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .about-mission {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .mission-img {
+      border-radius: 20px;
+      width: 100%;
+      height: 480px;
+      object-fit: cover;
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 24px;
+    }
+
+    .value-card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 2px 16px rgba(26, 46, 26, 0.06);
+      transition: transform 0.3s;
+    }
+
+    .value-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .value-icon {
+      font-size: 36px;
+      margin-bottom: 16px;
+    }
+
+    .value-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      color: var(--forest);
+      margin-bottom: 10px;
+    }
+
+    .value-card p {
+      font-size: 14px;
+      color: #888;
+      line-height: 1.7;
+    }
+
+    .team-section {
+      background: var(--linen);
+      padding: 80px 48px;
+      text-align: center;
+    }
+
+    .timeline {
+      max-width: 700px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--light-gray);
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      margin-bottom: 48px;
+    }
+
+    .timeline-item:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+
+    .timeline-item:nth-child(even) .t-content {
+      text-align: right;
+    }
+
+    .t-year {
+      background: var(--forest);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+      align-self: center;
+    }
+
+    .t-content h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      color: var(--forest);
+      margin-bottom: 6px;
+    }
+
+    .t-content p {
+      font-size: 14px;
+      color: #888;
+      line-height: 1.6;
+    }
+
+    @media (max-width:768px) {
+      .about-mission {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline::before {
+        left: 20px;
+      }
+
+      .timeline-item {
+        flex-direction: column !important;
+        padding-left: 48px;
+      }
+
+      .timeline-item:nth-child(even) .t-content {
+        text-align: left;
+      }
+
+      .t-year {
+        align-self: flex-start;
+      }
+
+      .team-section {
+        padding: 50px 20px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="../css/pages.css">
+</head>
+
+<body>
+  <nav>
+    <div class="nav-auth-left">
+      <a href="login.html" class="btn-primary btn-primary-sm" id="authBtn">Login / Sign Up</a>
+      <a href="admin.html" class="btn-primary btn-primary-sm" id="adminBtn"
+        style="display:none;background:var(--earth)">⚙️ Admin</a>
+    </div>
+    <a href="../index.html" class="nav-logo">
+      <div class="nav-logo-icon">🌿</div>
+      <span class="nav-logo-text">Nature's Touch</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="process.html">Process</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="nav-cart" onclick="window.location.href='cart.html'">🛒<span class="cart-badge"
+          style="display:none">0</span></button>
+      <button class="hamburger" title="Toggle navigation menu"
+        onclick="document.getElementById('navLinks').classList.toggle('open')"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <h1>About Us</h1>
+    <p>Born from a belief that nature's waste can become tomorrow's wonder.</p>
+  </div>
+
+  <section class="section about-mission">
+    <div class="reveal">
+      <div class="badge">Our Mission</div>
+      <h2 class="section-title">Turning Fallen Trees<br>into Treasures</h2>
+      <p class="section-subtitle" style="margin-bottom:20px">Nature's Touch began with a simple observation: after every
+        storm, fallen trees and leaves lay scattered — burning them only added to pollution. We saw an opportunity to
+        transform this waste into beautiful, functional products.</p>
+      <p style="font-size:15px;color:#888;line-height:1.8;margin-bottom:24px">Today, we work with local communities,
+        NGOs, and eco-conscious businesses to collect natural debris and craft it into premium stationery, packaging,
+        and lifestyle products — all while creating livelihoods and protecting our forests.</p>
+      <a href="products.html" class="btn-primary">Explore Our Products</a>
+    </div>
+    <div class="reveal">
+      <img src="../images/about1.jpg" alt="About Nature's Touch" class="mission-img">
+    </div>
+  </section>
+
+  <section class="section" style="background:var(--linen)">
+    <div class="reveal" style="text-align:center;max-width:600px;margin:0 auto 56px">
+      <div class="badge">Our Values</div>
+      <h2 class="section-title">What Drives Us</h2>
+    </div>
+    <div class="values-grid">
+      <div class="value-card reveal">
+        <div class="value-icon">🌿</div>
+        <h4>Sustainability First</h4>
+        <p>Every decision we make prioritizes the environment — from raw material collection to biodegradable packaging.
+        </p>
+      </div>
+      <div class="value-card reveal">
+        <div class="value-icon">🤝</div>
+        <h4>Community Impact</h4>
+        <p>We create meaningful livelihoods for local collectors, artisans, and recycling workers across communities.
+        </p>
+      </div>
+      <div class="value-card reveal">
+        <div class="value-icon">🔄</div>
+        <h4>Circular Economy</h4>
+        <p>Zero waste is our goal. Every product we make reduces landfill burden and avoids new resource extraction.</p>
+      </div>
+      <div class="value-card reveal">
+        <div class="value-icon">🎨</div>
+        <h4>Design Excellence</h4>
+        <p>Eco-friendly doesn't mean boring. We combine natural aesthetics with smart, functional design.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="about-mission" style="gap:48px">
+      <div class="reveal">
+        <img src="../images/about2.jpg" alt="Eco Kits" class="mission-img">
+      </div>
+      <div class="reveal">
+        <div class="badge">Our Journey</div>
+        <h2 class="section-title">A Timeline of Growth</h2>
+        <div style="margin-top:32px;display:flex;flex-direction:column;gap:28px">
+          <div style="display:flex;gap:20px">
+            <div
+              style="width:48px;height:48px;background:var(--forest);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;flex-shrink:0">
+              1</div>
+            <div>
+              <h4 style="font-family:'Playfair Display',serif;color:var(--forest);margin-bottom:4px">Observation &
+                Research</h4>
+              <p style="font-size:14px;color:#888;line-height:1.6">Visited forest areas, spoke to communities, and
+                identified the opportunity in fallen natural debris.</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:20px">
+            <div
+              style="width:48px;height:48px;background:var(--moss);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;flex-shrink:0">
+              2</div>
+            <div>
+              <h4 style="font-family:'Playfair Display',serif;color:var(--forest);margin-bottom:4px">First Products</h4>
+              <p style="font-size:14px;color:#888;line-height:1.6">Launched our first line of recycled notebooks and
+                kraft paper bags, testing with local eco stores.</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:20px">
+            <div
+              style="width:48px;height:48px;background:var(--sage);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;flex-shrink:0">
+              3</div>
+            <div>
+              <h4 style="font-family:'Playfair Display',serif;color:var(--forest);margin-bottom:4px">Growing Impact</h4>
+              <p style="font-size:14px;color:#888;line-height:1.6">Expanded to seed pencils, plantable calendars, herb
+                kits and combo packs. 5,000+ trees saved.</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:20px">
+            <div
+              style="width:48px;height:48px;background:var(--earth);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;flex-shrink:0">
+              4</div>
+            <div>
+              <h4 style="font-family:'Playfair Display',serif;color:var(--forest);margin-bottom:4px">Today & Beyond</h4>
+              <p style="font-size:14px;color:#888;line-height:1.6">Online platform launched. Building a nationwide
+                network of collectors, artisans and eco-buyers.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>🌿 Nature's Touch</h3>
+        <p>Transforming fallen trees and natural waste into beautiful, sustainable products.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="products.html">All Products</a></li>
+          <li><a href="products.html?cat=stationery">Stationery</a></li>
+          <li><a href="products.html?cat=packaging">Packaging</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="process.html">Process</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Account</h4>
+        <ul>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="signup.html">Sign Up</a></li>
+          <li><a href="cart.html">My Cart</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 Nature's Touch.</span><span>Made with 💚</span></div>
+  </footer>
+  <div class="toast"></div>
+  <script src="../js/utils.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/cart.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+
+</html>

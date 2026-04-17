@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — Nature's Touch</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .checkout-layout {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 48px;
+    }
+
+    .checkout-steps {
+      display: flex;
+      gap: 0;
+      margin-bottom: 36px;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #bbb;
+      cursor: pointer;
+    }
+
+    .step.active {
+      color: var(--forest);
+    }
+
+    .step.done {
+      color: var(--sage);
+    }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--light-gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .step.active .step-num {
+      background: var(--forest);
+      color: white;
+    }
+
+    .step.done .step-num {
+      background: var(--sage);
+      color: white;
+    }
+
+    .step-line {
+      flex: 1;
+      height: 2px;
+      background: var(--light-gray);
+      margin: 0 8px;
+    }
+
+    .step-line.done {
+      background: var(--sage);
+    }
+
+    .section-card {
+      background: white;
+      border-radius: 20px;
+      padding: 32px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 16px rgba(26, 46, 26, 0.06);
+    }
+
+    .section-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      color: var(--forest);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .order-summary-sidebar {
+      background: white;
+      border-radius: 20px;
+      padding: 28px;
+      height: fit-content;
+      position: sticky;
+      top: 110px;
+      box-shadow: 0 2px 16px rgba(26, 46, 26, 0.06);
+    }
+
+    .order-item {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .order-item img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+      background: var(--linen);
+    }
+
+    .order-item-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--forest);
+      margin-bottom: 3px;
+    }
+
+    .order-item-price {
+      font-size: 13px;
+      color: #888;
+    }
+
+    /* PAYMENT CARD */
+    .payment-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .pay-tab {
+      flex: 1;
+      padding: 12px 8px;
+      border: 1.5px solid var(--light-gray);
+      border-radius: 10px;
+      background: white;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      color: #888;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .pay-tab.active {
+      border-color: var(--forest);
+      color: var(--forest);
+      background: rgba(26, 46, 26, 0.04);
+    }
+
+    .card-preview {
+      background: linear-gradient(135deg, var(--forest) 0%, var(--moss) 100%);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-preview::before {
+      content: '';
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .card-preview::after {
+      content: '';
+      position: absolute;
+      bottom: -40px;
+      right: 20px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .card-number {
+      font-size: 18px;
+      letter-spacing: 4px;
+      margin: 16px 0 20px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+    }
+
+    .card-detail {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      opacity: 0.8;
+    }
+
+    .card-chip {
+      width: 40px;
+      height: 32px;
+      background: var(--earth);
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+
+    .pay-section {
+      display: none;
+    }
+
+    .pay-section.active {
+      display: block;
+    }
+
+    .upi-box {
+      text-align: center;
+      padding: 32px 20px;
+    }
+
+    .upi-box .upi-id {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--forest);
+      background: var(--linen);
+      padding: 12px 24px;
+      border-radius: 10px;
+      display: inline-block;
+      letter-spacing: 1px;
+      margin: 12px 0;
+    }
+
+    @media (max-width:768px) {
+      .checkout-layout {
+        grid-template-columns: 1fr;
+        padding: 20px;
+      }
+
+      .order-summary-sidebar {
+        position: static;
+      }
+
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="../css/pages.css">
+</head>
+
+<body>
+
+  <nav>
+    <div class="nav-auth-left">
+      <a href="login.html" class="btn-primary btn-primary-sm" id="authBtn">Login / Sign Up</a>
+      <a href="admin.html" class="btn-primary btn-primary-sm" id="adminBtn"
+        style="display:none;background:var(--earth)">⚙️ Admin</a>
+    </div>
+    <a href="../index.html" class="nav-logo">
+      <div class="nav-logo-icon">🌿</div>
+      <span class="nav-logo-text">Nature's Touch</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html" class="active">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="process.html">Process</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="nav-cart" onclick="window.location.href='cart.html'">🛒<span class="cart-badge"
+          style="display:none">0</span></button>
+      <button class="hamburger" title="Toggle navigation menu"
+        onclick="document.getElementById('navLinks').classList.toggle('open')"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="page-hero" style="padding:60px 48px 40px">
+    <h1>Checkout</h1>
+    <p>Complete your order securely</p>
+  </div>
+
+  <div class="checkout-layout">
+    <div>
+      <!-- Steps -->
+      <div class="checkout-steps">
+        <div class="step active" id="step1"><span class="step-num">1</span>Shipping</div>
+        <div class="step-line" id="line1"></div>
+        <div class="step" id="step2"><span class="step-num">2</span>Payment</div>
+        <div class="step-line" id="line2"></div>
+        <div class="step" id="step3"><span class="step-num">3</span>Confirm</div>
+      </div>
+
+      <!-- SHIPPING -->
+      <div id="shippingSection">
+        <div class="section-card">
+          <h3>📦 Shipping Details</h3>
+          <div class="two-col">
+            <div class="form-group"><label>First Name</label><input type="text" id="shipFirst" placeholder="Arjun">
+            </div>
+            <div class="form-group"><label>Last Name</label><input type="text" id="shipLast" placeholder="Sharma"></div>
+          </div>
+          <div class="form-group"><label>Email Address</label><input type="email" id="shipEmail"
+              placeholder="arjun@email.com"></div>
+          <div class="form-group"><label>Phone Number</label><input type="tel" id="shipPhone"
+              placeholder="+91 98765 43210"></div>
+          <div class="form-group"><label>Address</label><input type="text" id="shipAddr"
+              placeholder="House No, Street Name"></div>
+          <div class="two-col">
+            <div class="form-group"><label>City</label><input type="text" id="shipCity" placeholder="Ahmedabad"></div>
+            <div class="form-group"><label>State</label><input type="text" id="shipState" placeholder="Gujarat"></div>
+          </div>
+          <div class="two-col">
+            <div class="form-group"><label>PIN Code</label><input type="text" id="shipPin" placeholder="380001"></div>
+            <div class="form-group"><label>Country</label><input type="text" id="shipCountry" value="India" readonly>
+            </div>
+          </div>
+          <button class="btn-primary" style="width:100%;padding:14px;font-size:15px;margin-top:8px"
+            onclick="goToPayment()">Continue to Payment →</button>
+        </div>
+      </div>
+
+      <!-- PAYMENT -->
+      <div id="paymentSection" style="display:none">
+        <div class="section-card">
+          <h3>💳 Payment Method</h3>
+          <div class="payment-tabs">
+            <button class="pay-tab active" onclick="setPayTab('card',this)">💳 Card</button>
+            <button class="pay-tab" onclick="setPayTab('upi',this)">📱 UPI</button>
+            <button class="pay-tab" onclick="setPayTab('cod',this)">💵 Cash on Delivery</button>
+          </div>
+
+          <!-- CARD -->
+          <div class="pay-section active" id="cardSection">
+            <div class="card-preview" id="cardPreview">
+              <div class="card-chip"></div>
+              <div class="card-number" id="previewNumber">•••• •••• •••• ••••</div>
+              <div class="card-detail">
+                <div>
+                  <div style="font-size:10px;opacity:0.6;margin-bottom:2px">CARD HOLDER</div>
+                  <div id="previewName">YOUR NAME</div>
+                </div>
+                <div>
+                  <div style="font-size:10px;opacity:0.6;margin-bottom:2px">EXPIRES</div>
+                  <div id="previewExpiry">MM/YY</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group"><label>Card Number</label><input type="text" id="cardNumber"
+                placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCard(this)"></div>
+            <div class="form-group"><label>Cardholder Name</label><input type="text" id="cardName"
+                placeholder="ARJUN SHARMA"
+                oninput="document.getElementById('previewName').textContent=this.value||'YOUR NAME'"></div>
+            <div class="two-col">
+              <div class="form-group"><label>Expiry Date</label><input type="text" id="cardExpiry" placeholder="MM/YY"
+                  maxlength="5" oninput="formatExpiry(this)"></div>
+              <div class="form-group"><label>CVV</label><input type="password" id="cardCvv" placeholder="•••"
+                  maxlength="3"></div>
+            </div>
+          </div>
+
+          <!-- UPI -->
+          <div class="pay-section" id="upiSection">
+            <div class="upi-box">
+              <div style="font-size:48px;margin-bottom:8px">📱</div>
+              <h4 style="font-family:'Playfair Display',serif;color:var(--forest);margin-bottom:8px">Pay via UPI</h4>
+              <p style="font-size:14px;color:#888;margin-bottom:16px">Send payment to our UPI ID:</p>
+              <div class="upi-id">naturestouch@paytm</div>
+              <p style="font-size:12px;color:#aaa">Or enter your UPI ID below to receive a payment request</p>
+            </div>
+            <div class="form-group"><label>Your UPI ID</label><input type="text" id="upiId" placeholder="yourname@upi">
+            </div>
+          </div>
+
+          <!-- COD -->
+          <div class="pay-section" id="codSection">
+            <div style="text-align:center;padding:32px 20px">
+              <div style="font-size:56px;margin-bottom:16px">💵</div>
+              <h4 style="font-family:'Playfair Display',serif;font-size:20px;color:var(--forest);margin-bottom:12px">
+                Cash on Delivery</h4>
+              <p style="font-size:14px;color:#888;line-height:1.7">Pay when your order arrives at your doorstep. A small
+                COD fee of ₹25 will be added to your order total.</p>
+              <div
+                style="background:var(--linen);border-radius:12px;padding:16px;margin-top:20px;font-size:13px;color:#666">
+                📦 Expected delivery: 3–5 business days</div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:12px;margin-top:8px">
+            <button class="btn-secondary" style="flex:1;padding:14px" onclick="goToShipping()">← Back</button>
+            <button class="btn-primary" style="flex:2;padding:14px;font-size:15px" onclick="goToConfirm()">Review Order
+              →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONFIRM -->
+      <div id="confirmSection" style="display:none">
+        <div class="section-card" id="confirmContent">
+          <!-- filled by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ORDER SUMMARY -->
+    <div class="order-summary-sidebar">
+      <h3 style="font-family:'Playfair Display',serif;font-size:18px;color:var(--forest);margin-bottom:20px">Order
+        Summary</h3>
+      <div id="sidebarItems"></div>
+      <div style="margin-top:16px;border-top:2px solid var(--forest);padding-top:16px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span
+            style="font-size:13px;color:#666">Subtotal</span><span id="sideSubtotal" style="font-weight:600"></span>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span
+            style="font-size:13px;color:#666">Shipping</span><span id="sideShipping" style="font-weight:600"></span>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span
+            style="font-size:13px;color:#666">GST (5%)</span><span id="sideTax" style="font-weight:600"></span></div>
+        <div style="display:flex;justify-content:space-between;margin-top:12px"><span
+            style="font-weight:700;color:var(--forest)">Total</span><span id="sideTotal"
+            style="font-weight:700;font-size:20px;color:var(--bark);font-family:'Playfair Display',serif"></span></div>
+      </div>
+      <div style="margin-top:20px;font-size:12px;color:#aaa;text-align:center">🔒 Secured by 256-bit encryption<br>✅ GST
+        included • Free returns on select items</div>
+    </div>
+  </div>
+
+  <!-- SUCCESS MODAL -->
+  <div class="modal-overlay" id="successModal">
+    <div class="modal" style="text-align:center">
+      <div style="font-size:72px;margin-bottom:16px">🎉</div>
+      <h2 style="font-family:'Playfair Display',serif;color:var(--forest);font-size:28px;margin-bottom:12px">Order
+        Placed!</h2>
+      <p style="color:#888;margin-bottom:8px" id="orderIdText"></p>
+      <p style="font-size:14px;color:#888;line-height:1.7;margin-bottom:28px">Thank you for choosing Nature's Touch.
+        Your eco-friendly products are being prepared with love and will be shipped soon.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <a href="profile.html" class="btn-primary">Track My Order</a>
+        <a href="products.html" class="btn-secondary">Continue Shopping</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast"></div>
+
+  <script src="../js/utils.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/cart.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/main.js"></script>
+
+  <!-- <script>
+  //   document.addEventListener("DOMContentLoaded", () => {
+  //     const user = JSON.parse(localStorage.getItem("user"));
+
+  //     if (!user) return;
+
+  //     // 🔹 Get all inputs
+  //     const inputs = document.querySelectorAll("input");
+
+  //     inputs.forEach(input => {
+  //       const label = input.previousElementSibling?.innerText?.toLowerCase();
+
+  //       if (label?.includes("first name")) {
+  //         input.value = user.name?.split(" ")[0] || "";
+  //       }
+
+  //       if (label?.includes("last name")) {
+  //         input.value = user.name?.split(" ")[1] || "";
+  //       }
+
+  //       if (label?.includes("email")) {
+  //         input.value = user.email || "";
+  //       }
+
+  //       if (label?.includes("phone")) {
+  //         input.value = user.phone || ""; // may be empty
+  //       }
+  //     });
+  //   });
+  // </script> -->
+
+
+  <script>
+
+
+    let cartItems = [];
+    let shippingData = {};
+    let activePayMethod = 'card';
+
+    function initCheckout() {
+      // Check for single product from Buy Now
+      const urlId = new URLSearchParams(window.location.search).get('id');
+      if (urlId) {
+        const extra = JSON.parse(localStorage.getItem('nt_extra_products') || '[]');
+        const allProds = [...PRODUCTS, ...extra];
+        const p = allProds.find(x => x.id === urlId);
+        if (p) {
+          const imgSrc = p.img && p.img.startsWith('http') ? p.img : '../images/' + p.img;
+          cartItems = [{ ...p, img: imgSrc, qty: 1 }];
+        }
+      } else {
+        cartItems = Cart.get();
+        // Ensure cart items have correct img paths
+        cartItems = cartItems.map(i => ({
+          ...i,
+          img: i.img && (i.img.startsWith('../images/') || i.img.startsWith('http')) ? i.img : '../images/' + (i.img || '').replace('../', '').replace('images/', '')
+        }));
+      }
+
+      if (cartItems.length === 0) { window.location.href = 'products.html'; return; }
+
+      // Fill sidebar
+      const subtotal = cartItems.reduce((s, i) => s + i.price * i.qty, 0);
+      const shipping = subtotal > 500 ? 0 : 49;
+      const tax = Math.round(subtotal * 0.05);
+      const total = subtotal + shipping + tax;
+
+      document.getElementById('sidebarItems').innerHTML = cartItems.map(i => `
+    <div class="order-item">
+      <img src="${i.img}" alt="${i.name}">
+      <div><div class="order-item-name">${i.name}</div><div class="order-item-price">₹${i.price} × ${i.qty}</div></div>
+      <div style="font-weight:700;color:var(--bark);font-size:15px;margin-left:auto">₹${i.price * i.qty}</div>
+    </div>`).join('');
+
+      document.getElementById('sideSubtotal').textContent = '₹' + subtotal;
+      document.getElementById('sideShipping').innerHTML = shipping === 0 ? '<span style="color:var(--moss)">FREE</span>' : '₹' + shipping;
+      document.getElementById('sideTax').textContent = '₹' + tax;
+      document.getElementById('sideTotal').textContent = '₹' + total;
+
+      // Pre-fill if logged in
+      const session = Auth.getSession();
+      if (session) {
+        document.getElementById('shipFirst').value = session.name.split(' ')[0] || '';
+        document.getElementById('shipLast').value = session.name.split(' ')[1] || '';
+        document.getElementById('shipEmail').value = session.email || '';
+      }
+    }
+
+    function setPayTab(type, btn) {
+      activePayMethod = type;
+      document.querySelectorAll('.pay-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.pay-section').forEach(s => s.classList.remove('active'));
+      document.getElementById(type + 'Section').classList.add('active');
+    }
+
+    function formatCard(input) {
+      let v = input.value.replace(/\D/g, '').substring(0, 16);
+      input.value = v.replace(/(.{4})/g, '$1 ').trim();
+      const display = v.padEnd(16, '•').replace(/(.{4})/g, '$1 ').trim();
+      document.getElementById('previewNumber').textContent = display;
+    }
+
+    function formatExpiry(input) {
+      let v = input.value.replace(/\D/g, '');
+      if (v.length >= 2) v = v.substring(0, 2) + '/' + v.substring(2, 4);
+      input.value = v;
+      document.getElementById('previewExpiry').textContent = v || 'MM/YY';
+    }
+
+    function goToPayment() {
+      const fields = ['shipFirst', 'shipLast', 'shipEmail', 'shipPhone', 'shipAddr', 'shipCity', 'shipState', 'shipPin'];
+      for (const f of fields) {
+        if (!document.getElementById(f).value.trim()) { showToast('⚠️ Please fill all shipping fields'); return; }
+      }
+      shippingData = {
+        name: document.getElementById('shipFirst').value + ' ' + document.getElementById('shipLast').value,
+        email: document.getElementById('shipEmail').value,
+        phone: document.getElementById('shipPhone').value,
+        address: document.getElementById('shipAddr').value + ', ' + document.getElementById('shipCity').value + ', ' + document.getElementById('shipState').value + ' - ' + document.getElementById('shipPin').value
+      };
+      document.getElementById('shippingSection').style.display = 'none';
+      document.getElementById('paymentSection').style.display = 'block';
+      setStep(2);
+    }
+
+    function goToShipping() {
+      document.getElementById('paymentSection').style.display = 'none';
+      document.getElementById('shippingSection').style.display = 'block';
+      setStep(1);
+    }
+
+    function goToConfirm() {
+      if (activePayMethod === 'card') {
+        const num = document.getElementById('cardNumber').value.replace(/\s/g, '');
+        if (num.length < 16) { showToast('⚠️ Enter valid 16-digit card number'); return; }
+        if (!document.getElementById('cardName').value) { showToast('⚠️ Enter cardholder name'); return; }
+        if (!document.getElementById('cardExpiry').value) { showToast('⚠️ Enter expiry date'); return; }
+        if (!document.getElementById('cardCvv').value) { showToast('⚠️ Enter CVV'); return; }
+      }
+
+      const subtotal = cartItems.reduce((s, i) => s + i.price * i.qty, 0);
+      const shipping = subtotal > 500 ? 0 : 49;
+      const tax = Math.round(subtotal * 0.05);
+      const total = subtotal + shipping + tax;
+
+      const payDisplay = { card: '💳 Credit/Debit Card', upi: '📱 UPI', cod: '💵 Cash on Delivery' };
+
+      document.getElementById('confirmContent').innerHTML = `
+    <h3>✅ Review & Confirm</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:20px">
+      <div style="background:var(--warm-white);border-radius:12px;padding:20px">
+        <h4 style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--sage);margin-bottom:12px">Shipping To</h4>
+        <p style="font-size:14px;font-weight:600;margin-bottom:4px">${shippingData.name}</p>
+        <p style="font-size:13px;color:#888;line-height:1.6">${shippingData.address}</p>
+        <p style="font-size:13px;color:#888">${shippingData.phone}</p>
+      </div>
+      <div style="background:var(--warm-white);border-radius:12px;padding:20px">
+        <h4 style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--sage);margin-bottom:12px">Payment</h4>
+        <p style="font-size:14px;font-weight:600">${payDisplay[activePayMethod]}</p>
+        <p style="font-size:13px;color:#888;margin-top:8px">Total: ₹${total}</p>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px">
+      <button class="btn-secondary" style="flex:1;padding:14px" onclick="goBackPayment()">← Back</button>
+      <button class="btn-primary" style="flex:2;padding:14px;font-size:15px" onclick="placeOrder()">🎉 Place Order — ₹${total}</button>
+    </div>`;
+
+      document.getElementById('paymentSection').style.display = 'none';
+      document.getElementById('confirmSection').style.display = 'block';
+      setStep(3);
+    }
+
+    function goBackPayment() {
+      document.getElementById('confirmSection').style.display = 'none';
+      document.getElementById('paymentSection').style.display = 'block';
+      setStep(2);
+    }
+
+    // function placeOrder(btn) {
+    //   if (btn) {
+    //     btn.disabled = true;
+    //     btn.innerHTML = '<span style="display:inline-block;animation:spin 1s linear infinite">↻</span> Processing...';
+    //   }
+    //   setTimeout(() => {
+    //     const subtotal = cartItems.reduce((s, i) => s + i.price * i.qty, 0);
+    //     const shipping = subtotal > 500 ? 0 : 49;
+    //     const tax = Math.round(subtotal * 0.05);
+    //     const orderId = Orders.add({
+    //       items: cartItems,
+    //       shipping: shippingData,
+    //       payMethod: activePayMethod,
+    //       subtotal, shipping, tax,
+    //       total: subtotal + shipping + tax,
+    //       userId: Auth.getSession()?.email || 'guest'
+    //     });
+    //     Cart.clear();
+    //     document.getElementById('orderIdText').textContent = 'Order ID: ' + orderId;
+    //     document.getElementById('successModal').classList.add('active');
+    //   }, 1500);
+    // }
+
+    function setStep(n) {
+      for (let i = 1; i <= 3; i++) {
+        const s = document.getElementById('step' + i);
+        s.classList.remove('active', 'done');
+        if (i < n) s.classList.add('done');
+        else if (i === n) s.classList.add('active');
+      }
+      for (let i = 1; i <= 2; i++) {
+        const l = document.getElementById('line' + i);
+        l.classList.toggle('done', i < n);
+      }
+    }
+
+    initCheckout();
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const user = JSON.parse(localStorage.getItem("nt_session"));
+
+      if (!user) return;
+
+      console.log("Checkout user:", user); // 🔍 debug
+
+      const nameParts = user.name ? user.name.split(" ") : ["", ""];
+
+      // FIRST NAME
+      const firstNameInput = document.getElementById("firstName")
+        || document.querySelector("input[placeholder='Arjun']");
+      if (firstNameInput) firstNameInput.value = nameParts[0] || "";
+
+      // LAST NAME
+      const lastNameInput = document.getElementById("lastName")
+        || document.querySelector("input[placeholder='Sharma']");
+      if (lastNameInput) lastNameInput.value = nameParts[1] || "";
+
+      // EMAIL
+      const emailInput = document.getElementById("emailInput")
+        || document.querySelector("input[type='email']");
+      if (emailInput) emailInput.value = user.email || "";
+
+      // PHONE
+      const phoneInput = document.getElementById("phone")
+        || document.querySelector("input[type='tel']");
+      if (phoneInput) phoneInput.value = user.phone || "";
+    });
+  </script>
+
+
+  <script>
+    async function placeOrder() {
+      try {
+
+        if (!cartItems.length) {
+          alert("Cart is empty");
+          return;
+        }
+
+        const user = JSON.parse(localStorage.getItem("nt_session"));
+
+        const total = cartItems.reduce((sum, item) => sum + item.price * item.qty, 0);
+
+        const res = await fetch("http://localhost:5000/api/order/create", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            userEmail: user?.email || "guest",
+
+            items: cartItems.map(i => ({
+              id: i.id,
+              name: i.name,
+              price: i.price,
+              qty: i.qty,
+              img: i.img.replace('../images/', '')
+            })),
+
+            total,
+
+            // ✅ ADD THIS (VERY IMPORTANT)
+            address: {
+              name: shippingData.name,
+              email: shippingData.email,
+              phone: shippingData.phone,
+              address: shippingData.address
+            }
+          })
+        });
+
+        const data = await res.json();
+
+          console.log("ORDER DATA:", data);
+
+          if(data.success && data.order) {
+
+            // ✅ SAVE FOR INVOICE
+            localStorage.setItem("invoice", JSON.stringify(data.order));
+
+        // ✅ CLEAR CART
+        Cart.clear();  // (IMPORTANT — not localStorage manually)
+
+        window.location.href = "invoice.html";
+
+      } else {
+        alert("Order failed");
+      }
+
+    } catch (err) {
+      console.error(err);
+      alert("Server error");
+    }
+    }
+  </script>
+  <!-- <script src="../js/main.js"></script> -->
+
+
+</body>
+
+</html>

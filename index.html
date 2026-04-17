@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nature's Touch — Eco-Friendly Products</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav id="mainNav">
+    <!-- LEFT: Auth button -->
+    <div class="nav-auth-left">
+      <a href="pages/login.html" class="btn-primary btn-primary-sm" id="authBtn">Login / Sign Up</a>
+      <a href="Admin/admin.html" class="btn-primary btn-primary-sm admin-only" id="adminBtn"
+        style="display:none;background:var(--earth)">⚙️ Admin</a>
+    </div>
+
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">🌿</div>
+      <span class="nav-logo-text">Nature's Touch</span>
+    </a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="pages/about.html">About</a></li>
+      <li><a href="pages/products.html">Products</a></li>
+      <li><a href="pages/process.html">Process</a></li>
+      <li><a href="pages/contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="nav-cart" onclick="window.location.href='pages/cart.html'">🛒<span class="cart-badge"
+          style="display:none">0</span></button>
+      <button class="hamburger" title="Toggle navigation menu"
+        onclick="document.getElementById('mobilemenu').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-slider" id="heroSlider">
+      <div class="hero-slide active" data-image="images/home1.jpg"></div>
+      <div class="hero-slide" data-image="images/home2.jpg"></div>
+      <div class="hero-slide" data-image="images/home3.jpg"></div>
+      <div class="hero-slide" data-image="images/home4.jpg"></div>
+      <div class="hero-slide" data-image="images/home5.jpg"></div>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="badge">🌱 From Forest Waste to Beautiful Products</div>
+      <h1>Where Nature<br><em>Finds New Life</em></h1>
+      <p>We transform fallen trees, branches, and leaves into stunning eco-friendly stationery, packaging, and lifestyle
+        products. Every purchase plants seeds of change.</p>
+      <div class="hero-btns">
+        <a href="pages/products.html" class="btn-primary">Shop Now</a>
+        <a href="pages/about.html" class="btn-secondary btn-secondary-light">Our Story</a>
+      </div>
+    </div>
+    <div class="hero-dots" id="heroDots"></div>
+    <button class="hero-arrow left" onclick="changeSlide(-1)">‹</button>
+    <button class="hero-arrow right" onclick="changeSlide(1)">›</button>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats-bar">
+    <div class="stat reveal">
+      <h3>5,000+</h3>
+      <p>Trees Saved</p>
+    </div>
+    <div class="stat reveal">
+      <h3>12,000+</h3>
+      <p>Products Sold</p>
+    </div>
+    <div class="stat reveal">
+      <h3>100%</h3>
+      <p>Eco-Friendly</p>
+    </div>
+    <div class="stat reveal">
+      <h3>Zero</h3>
+      <p>Plastic Waste</p>
+    </div>
+  </section>
+
+
+  <!-- QUICK VIEW MODAL -->
+  <div class="modal-overlay" id="quickViewModal">
+    <div class="modal" style="max-width:700px">
+      <button class="modal-close" onclick="closeModal('quickViewModal')">X</button>
+      <div id="quickViewContent"></div>
+    </div>
+  </div>
+
+  <!-- FEATURED PRODUCTS -->
+  <section class="section featured-section">
+    <div class="section-header reveal">
+      <div class="badge">Our Products</div>
+      <h2 class="section-title">Crafted from Nature,<br>Made with Purpose</h2>
+      <p class="section-subtitle">Every item in our collection starts life as fallen trees and natural waste —
+        transformed into something beautiful and useful.</p>
+      <a href="pages/products.html" class="btn-secondary btn-secondary-margin">View All Products</a>
+    </div>
+    <div class="featured-grid" id="featuredGrid"></div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-section">
+    <div class="how-inner">
+      <div class="section-header reveal how-header">
+        <div class="badge badge-light">Our Process</div>
+        <h2 class="section-title">From Forest Floor<br>to Your Doorstep</h2>
+      </div>
+      <div class="process-steps">
+        <div class="process-step reveal">
+          <div class="step-icon">🌳</div>
+          <h4>Collect</h4>
+          <p>Fallen trees, branches and leaves are collected from disaster-affected areas and forests.</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="process-step reveal">
+          <div class="step-icon">⚙️</div>
+          <h4>Process</h4>
+          <p>Natural materials are cleaned, sorted, shredded and pulped into eco-friendly base material.</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="process-step reveal">
+          <div class="step-icon">🎨</div>
+          <h4>Create</h4>
+          <p>Skilled artisans craft beautiful, functional products — notebooks, bags, calendars and more.</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="process-step reveal">
+          <div class="step-icon">📦</div>
+          <h4>Deliver</h4>
+          <p>Products are quality-checked, eco-packaged and delivered to your door with love.</p>
+        </div>
+      </div>
+      <div class="process-cta">
+        <a href="pages/process.html" class="btn-gold">Learn More About Our Process</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT SECTION -->
+  <section class="section about-preview">
+    <div class="about-img-grid">
+      <img src="../natures-touch/images/about1.jpg" alt="About Nature's Touch" class="reveal">
+      <img src="../natures-touch/images/about2.jpg" alt="Eco Products" class="reveal">
+    </div>
+    <div class="about-text reveal">
+      <div class="badge">About Us</div>
+      <h2 class="section-title">Born from a Love of<br>the Natural World</h2>
+      <p class="section-subtitle">Nature's Touch was founded on a simple belief: that the waste our forests leave behind
+        can become tomorrow's treasures. We partner with local communities, NGOs and eco-conscious buyers to collect
+        natural debris and transform it into premium, sustainable products.</p>
+      <br>
+      <p class="about-preview-text">Our work creates livelihoods, reduces landfill waste, and brings the beauty of
+        nature into everyday life — one product at a time.</p>
+      <br>
+      <a href="pages/about.html" class="btn-primary btn-primary-margin">Read Our Story</a>
+    </div>
+  </section>
+
+  <!-- REPORT CTA -->
+  <section class="report-cta">
+    <div class="cta-content reveal">
+      <h2>Report Fallen Trees<br>in Your Area</h2>
+      <p>Help us source raw materials by reporting fallen trees or natural debris near you. We'll collect it and turn it
+        into something amazing.</p>
+      <a href="pages/report.html" class="btn-gold">Submit a Report</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>🌿 Nature's Touch</h3>
+        <p>Transforming fallen trees and natural waste into eco-friendly products that inspire sustainable living.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="pages/products.html">All Products</a></li>
+          <li><a href="pages/products.html?cat=stationery">Stationery</a></li>
+          <li><a href="pages/products.html?cat=packaging">Packaging</a></li>
+          <li><a href="pages/products.html?cat=combo">Combo Kits</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="pages/about.html">About Us</a></li>
+          <li><a href="pages/process.html">Our Process</a></li>
+          <li><a href="pages/report.html">Report Trees</a></li>
+          <li><a href="pages/contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Account</h4>
+        <ul>
+          <li><a href="pages/login.html">Login</a></li>
+          <li><a href="pages/signup.html">Sign Up</a></li>
+          <li><a href="pages/cart.html">My Cart</a></li>
+          <li><a href="pages/profile.html">My Orders</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Nature's Touch. All rights reserved.</span>
+      <span>Made with 💚 for the planet</span>
+    </div>
+  </footer>
+
+  <div class="toast"></div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/seed.js"></script>
+  <script>
+    // Hero Slider
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.hero-slide');
+    const dotsContainer = document.getElementById('heroDots');
+
+    // Set background images from data attributes
+    slides.forEach((slide) => {
+      const image = slide.getAttribute('data-image');
+      if (image) {
+        slide.style.backgroundImage = `url('${image}')`;
+      }
+    });
+
+    slides.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'dot' + (i === 0 ? ' active' : '');
+      dot.onclick = () => goToSlide(i);
+      dotsContainer.appendChild(dot);
+    });
+
+    function goToSlide(n) {
+      slides[currentSlide].classList.remove('active');
+      document.querySelectorAll('.dot')[currentSlide].classList.remove('active');
+      currentSlide = (n + slides.length) % slides.length;
+      slides[currentSlide].classList.add('active');
+      document.querySelectorAll('.dot')[currentSlide].classList.add('active');
+    }
+
+
+
+    function changeSlide(dir) { goToSlide(currentSlide + dir); }
+
+    setInterval(() => changeSlide(1), 5000);
+
+    // Featured products — include admin-added extras
+    const featuredIds = ['p1', 'p2', 'p3', 'p4', 'p7', 'p8'];
+    const extraProds = JSON.parse(localStorage.getItem('nt_extra_products') || '[]');
+    const allProdsHome = [...PRODUCTS, ...extraProds];
+    const featuredProds = featuredIds.map(id => allProdsHome.find(x => x.id === id)).filter(Boolean);
+    // Also show up to 2 newest admin-added products if any
+    const adminProds = extraProds.slice(-2);
+    const finalFeatured = [...featuredProds, ...adminProds.filter(p => !featuredProds.find(f => f.id === p.id))].slice(0, 8);
+    document.getElementById('featuredGrid').innerHTML = finalFeatured.map(p => renderProductCard(p, '')).join('');
+
+    // quickView stub for home page (no modal here, redirect to products)
+    function quickView(id) {
+      window.location.href = 'pages/products.html';
+    }
+  </script>
+  <script>
+    // 🔐 AUTH UI SYSTEM
+
+    const user = JSON.parse(localStorage.getItem("nt_session"));
+    const token = localStorage.getItem("token");
+
+    const authBtn = document.getElementById("authBtn");
+    const adminBtn = document.getElementById("adminBtn");
+
+    if (user && token) {
+      // ✅ Show user name + logout
+      document.querySelector(".nav-auth-left").innerHTML = `
+    <span style="margin-right:10px;">Hi, ${user.name} 👋</span>
+    <button onclick="logout()" class="btn-primary btn-primary-sm">Logout</button>
+  `;
+
+      // ✅ Optional: show admin button (if email matches)
+      if (user.email === "admin@naturestouch.com") {
+        adminBtn.style.display = "inline-block";
+      }
+
+    } else {
+      // ❌ Not logged in
+      authBtn.style.display = "inline-block";
+      adminBtn.style.display = "none";
+    }
+
+    // 🔓 LOGOUT FUNCTION
+    function logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("nt_session");
+
+      alert("Logged out successfully");
+
+      window.location.href = "pages/login.html";
+    }
+  </script>
+  <script>
+
+    function quickView(id) {
+      const p = PRODUCTS.find(x => x.id === id);
+      if (!p) return;
+
+      const imgSrc = p.img && p.img.startsWith('http')
+        ? p.img
+        : 'images/' + p.img;
+
+      document.getElementById('quickViewContent').innerHTML = `
+    <div style="display:flex;gap:30px">
+      <img src="${imgSrc}" style="width:300px;border-radius:12px">
+      <div>
+        <h2>${p.name}</h2>
+        <h3>₹${p.price}</h3>
+        <p>${p.desc || ""}</p>
+
+        <button class="cart-btn"
+  onclick="Cart.add({id:'${p.id}',name:'${p.name}',price:${p.price},image:'${imgSrc}',qty:1})">
+  🛒 Add to Cart
+</button>
+      </div>
+    </div>
+  `;
+
+      document.getElementById("quickViewModal").classList.add("active");
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove("active");
+    }
+
+  </script>
+</body>
+
+</html>
