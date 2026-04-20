@@ -119,7 +119,6 @@
       color: #555;
     }
 
-    /* Standardized button style based on your classes */
     .btn-submit {
       width: 100%;
       padding: 14px;
@@ -128,34 +127,105 @@
       background: var(--forest);
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
       font-weight: 600;
       transition: opacity 0.2s;
     }
 
-    .btn-submit:hover {
-      opacity: 0.9;
+    .btn-submit:hover { opacity: 0.9; }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* ✅ Validation styles */
+    .form-group {
+      margin-bottom: 15px;
+      position: relative;
     }
 
-    .form-group {
-        margin-bottom: 15px;
-    }
-    
     .form-group label {
-        display: block;
-        font-size: 13px;
-        margin-bottom: 5px;
-        color: #444;
-        font-weight: 500;
+      display: block;
+      font-size: 13px;
+      margin-bottom: 5px;
+      color: #444;
+      font-weight: 500;
     }
 
     .form-group input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-sizing: border-box;
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid #ddd;
+      border-radius: 10px;
+      font-size: 14px;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+
+    .form-group input:focus {
+      border-color: var(--forest);
+    }
+
+    .form-group input.input-error {
+      border-color: #e74c3c;
+      background: #fff8f8;
+    }
+
+    .form-group input.input-success {
+      border-color: #27ae60;
+      background: #f8fff9;
+    }
+
+    .field-error {
+      font-size: 12px;
+      color: #e74c3c;
+      margin-top: 5px;
+      display: none;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .field-error.show {
+      display: flex;
+    }
+
+    /* ✅ Password strength indicator */
+    .password-rules {
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .password-rules.show {
+      display: block;
+    }
+
+    .rule {
+      font-size: 12px;
+      color: #aaa;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+      transition: color 0.2s;
+    }
+
+    .rule.pass {
+      color: #27ae60;
+    }
+
+    .rule .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ddd;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+
+    .rule.pass .dot {
+      background: #27ae60;
     }
   </style>
   <link rel="stylesheet" href="../css/pages.css">
@@ -198,32 +268,57 @@
       <div class="error-msg" id="errorMsg"></div>
       <div class="success-msg" id="successMsg"></div>
 
-      <form id="signupForm">
+      <form id="signupForm" novalidate>
+
         <div class="two-col">
           <div class="form-group">
             <label>First Name</label>
-            <input type="text" id="firstName" placeholder="Arjun" required>
+            <input type="text" id="firstName" placeholder="Arjun"
+              oninput="clearFieldError('firstName', 'firstNameError')">
+            <div class="field-error" id="firstNameError">⚠️ First name is required</div>
           </div>
           <div class="form-group">
             <label>Last Name</label>
-            <input type="text" id="lastName" placeholder="Sharma" required>
+            <input type="text" id="lastName" placeholder="Sharma"
+              oninput="clearFieldError('lastName', 'lastNameError')">
+            <div class="field-error" id="lastNameError">⚠️ Last name is required</div>
           </div>
         </div>
+
         <div class="form-group">
           <label>Email Address</label>
-          <input type="email" id="emailInput" placeholder="arjun@email.com" required>
+          <input type="email" id="emailInput" placeholder="arjun@email.com"
+            oninput="clearFieldError('emailInput', 'emailError')">
+          <div class="field-error" id="emailError">⚠️ Email is required</div>
         </div>
+
         <div class="form-group">
           <label>Phone Number</label>
-          <input type="tel" id="phone" placeholder="+91 98765 43210">
+          <input type="tel" id="phone" placeholder="9876543210" maxlength="10"
+            oninput="onlyNumbers(this); clearFieldError('phone', 'phoneError')">
+          <div class="field-error" id="phoneError">⚠️ Phone is required</div>
         </div>
+
         <div class="form-group">
           <label>Password</label>
-          <input type="password" id="passwordInput" placeholder="Min. 6 characters" required>
+          <input type="password" id="passwordInput" placeholder="Min. 6 characters"
+            oninput="checkPasswordStrength(this.value); clearFieldError('passwordInput', 'passwordError')">
+          <div class="field-error" id="passwordError">⚠️ Password is required</div>
+
+          <!-- ✅ Password rules live checker -->
+          <div class="password-rules" id="passwordRules">
+            <div class="rule" id="rule-length"><span class="dot"></span> At least 6 characters</div>
+            <div class="rule" id="rule-upper"><span class="dot"></span> One uppercase letter (A-Z)</div>
+            <div class="rule" id="rule-lower"><span class="dot"></span> One lowercase letter (a-z)</div>
+            <div class="rule" id="rule-symbol"><span class="dot"></span> One special character (!@#$%)</div>
+          </div>
         </div>
+
         <div class="form-group">
           <label>Confirm Password</label>
-          <input type="password" id="confirmPassword" placeholder="Repeat password" required>
+          <input type="password" id="confirmPassword" placeholder="Repeat password"
+            oninput="clearFieldError('confirmPassword', 'confirmError')">
+          <div class="field-error" id="confirmError">⚠️ Please confirm your password</div>
         </div>
 
         <button type="submit" class="btn-submit">Create Account →</button>
@@ -242,73 +337,157 @@
   <script src="../js/main.js"></script>
 
   <script>
-    // 1. Check if user is already logged in
+
+    // ✅ Redirect if already logged in
     if (typeof Auth !== 'undefined' && Auth.isLoggedIn()) {
       window.location.href = '../index.html';
     }
 
-    // 2. Helper functions for UI
+    // ✅ Only allow numbers in phone field
+    function onlyNumbers(input) {
+      input.value = input.value.replace(/[^0-9]/g, '');
+    }
+
+    // ✅ Show field error
+    function showFieldError(inputId, errorId, message) {
+      const input = document.getElementById(inputId);
+      const error = document.getElementById(errorId);
+      input.classList.add('input-error');
+      input.classList.remove('input-success');
+      error.textContent = '⚠️ ' + message;
+      error.classList.add('show');
+    }
+
+    // ✅ Clear field error
+    function clearFieldError(inputId, errorId) {
+      const input = document.getElementById(inputId);
+      const error = document.getElementById(errorId);
+      input.classList.remove('input-error');
+      input.classList.add('input-success');
+      error.classList.remove('show');
+    }
+
+    // ✅ Live password strength checker
+    function checkPasswordStrength(val) {
+      const rules = document.getElementById('passwordRules');
+      rules.classList.add('show');
+
+      const checks = {
+        'rule-length': val.length >= 6,
+        'rule-upper':  /[A-Z]/.test(val),
+        'rule-lower':  /[a-z]/.test(val),
+        'rule-symbol': /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(val),
+      };
+
+      for (const [id, passed] of Object.entries(checks)) {
+        const el = document.getElementById(id);
+        if (passed) el.classList.add('pass');
+        else el.classList.remove('pass');
+      }
+    }
+
+    // ✅ Show success/error banners
     function showError(msg) {
-      const errEl = document.getElementById('errorMsg');
-      errEl.textContent = msg;
-      errEl.style.display = 'block';
+      const el = document.getElementById('errorMsg');
+      el.textContent = msg;
+      el.style.display = 'block';
       document.getElementById('successMsg').style.display = 'none';
     }
 
     function showSuccess(msg) {
-      const succEl = document.getElementById('successMsg');
-      succEl.textContent = msg;
-      succEl.style.display = 'block';
+      const el = document.getElementById('successMsg');
+      el.textContent = msg;
+      el.style.display = 'block';
       document.getElementById('errorMsg').style.display = 'none';
     }
 
-    // 3. Form Submission Logic
+    // ✅ Form submit with full validation
     document.getElementById('signupForm').addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      // Get values using specific IDs
-      const firstName = document.getElementById('firstName').value.trim();
-      const lastName = document.getElementById('lastName').value.trim();
-      const email = document.getElementById('emailInput').value.trim();
-      const password = document.getElementById('passwordInput').value;
+      const firstName      = document.getElementById('firstName').value.trim();
+      const lastName       = document.getElementById('lastName').value.trim();
+      const email          = document.getElementById('emailInput').value.trim();
+      const phone          = document.getElementById('phone').value.trim();
+      const password       = document.getElementById('passwordInput').value;
       const confirmPassword = document.getElementById('confirmPassword').value;
 
-      // Simple Validation
-      if (password.length < 6) {
-        showError("Password must be at least 6 characters.");
-        return;
+      let hasError = false;
+
+      // First name
+      if (!firstName) {
+        showFieldError('firstName', 'firstNameError', 'First name is required');
+        hasError = true;
       }
 
-      if (password !== confirmPassword) {
-        showError("Passwords do not match.");
-        return;
+      // Last name
+      if (!lastName) {
+        showFieldError('lastName', 'lastNameError', 'Last name is required');
+        hasError = true;
       }
+
+      // Email
+      if (!email) {
+        showFieldError('emailInput', 'emailError', 'Email is required');
+        hasError = true;
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showFieldError('emailInput', 'emailError', 'Enter a valid email address');
+        hasError = true;
+      }
+
+      // Phone — must be exactly 10 digits
+      if (!phone) {
+        showFieldError('phone', 'phoneError', 'Phone number is required');
+        hasError = true;
+      } else if (!/^[0-9]{10}$/.test(phone)) {
+        showFieldError('phone', 'phoneError', 'Enter a valid 10-digit phone number');
+        hasError = true;
+      }
+
+      // Password rules
+      if (!password) {
+        showFieldError('passwordInput', 'passwordError', 'Password is required');
+        hasError = true;
+      } else if (password.length < 6) {
+        showFieldError('passwordInput', 'passwordError', 'Password must be at least 6 characters');
+        hasError = true;
+      } else if (!/[A-Z]/.test(password)) {
+        showFieldError('passwordInput', 'passwordError', 'Password must have at least one uppercase letter');
+        hasError = true;
+      } else if (!/[a-z]/.test(password)) {
+        showFieldError('passwordInput', 'passwordError', 'Password must have at least one lowercase letter');
+        hasError = true;
+      } else if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+        showFieldError('passwordInput', 'passwordError', 'Password must have at least one special character');
+        hasError = true;
+      }
+
+      // Confirm password
+      if (!confirmPassword) {
+        showFieldError('confirmPassword', 'confirmError', 'Please confirm your password');
+        hasError = true;
+      } else if (password !== confirmPassword) {
+        showFieldError('confirmPassword', 'confirmError', 'Passwords do not match');
+        hasError = true;
+      }
+
+      if (hasError) return;
 
       const fullName = `${firstName} ${lastName}`;
 
       try {
         const response = await fetch("http://localhost:5000/api/auth/signup", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ 
-            name: fullName, 
-            email: email, 
-            password: password 
-          })
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: fullName, email, password, phone })
         });
 
         const data = await response.json();
 
         if (response.ok) {
           showSuccess("🎉 Account created! Redirecting to login...");
-          // Disable button to prevent double clicks
           document.querySelector('.btn-submit').disabled = true;
-          
-          setTimeout(() => {
-            window.location.href = "login.html";
-          }, 2000);
+          setTimeout(() => { window.location.href = "login.html"; }, 2000);
         } else {
           showError(data.msg || "Signup failed. Please try again.");
         }
@@ -318,7 +497,7 @@
         showError("Cannot connect to server. Is the backend running?");
       }
     });
+
   </script>
 </body>
-
 </html>
