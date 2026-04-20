@@ -30,84 +30,23 @@ const PRODUCTS = [
   { id: 'p8', name: 'Herb Lab Kit', category: 'combo', price: 699, img: 'everything2.jpg', img2: 'everything2.jpg', desc: 'Herb starter kit.', features: ['5 seeds'] },
 ];
 
-// ✅ PRODUCT CARD
-// function renderProductCard(p, basePath) {
-//   basePath = basePath || getBasePath();
-
-//   const imgSrc = basePath + 'images/' + p.img;
-//   const checkoutHref = basePath + 'pages/checkout.html?id=' + p.id;
-//   const safeName = p.name.replace(/'/g, "\\'");
-
-//   return `
-//   <div class="product-card animate-up">
-//     <div class="product-img-wrap">
-//       <img src="${imgSrc}" alt="${p.name}">
-//       <div class="product-overlay">
-//         <button onclick="quickView('${p.id}')">Quick View</button>
-//       </div>
-//     </div>
-//     <div class="product-info">
-//       <span>${p.category}</span>
-//       <h3>${p.name}</h3>
-//       <div>
-//         ₹${p.price}
-//         <button onclick="Cart.add({id:'${p.id}',name:'${safeName}',price:${p.price},img:'${imgSrc}',qty:1})">Cart</button>
-//         <a href="${checkoutHref}">Buy</a>
-//       </div>
-//     </div>
-//   </div>`;
-// }
-
-// function renderProductCard(p) {
-//   const imgSrc = p.img && p.img.startsWith('http')
-//     ? p.img
-//     : '../images/' + p.img;
-
-//   return `
-//   <div class="product-card">
-
-//     <div class="product-img">
-//       <img src="${imgSrc}" alt="${p.name}" />
-
-//       <div class="quick-view" onclick="quickView('${p.id}')">
-//         Quick View
-//       </div>
-//     </div>
-
-//     <div class="product-info">
-//       <p>${p.category}</p>
-//       <h3>${p.name}</h3>
-
-//       <div class="product-price">₹${p.price}</div>
-
-//       <div class="product-actions">
-//         <button class="cart-btn"
-//           onclick="Cart.add({id:'${p.id}',name:'${p.name}',price:${p.price},img:'${imgSrc}',qty:1})">
-//           Cart
-//         </button>
-
-//         <a href="checkout.html?id=${p.id}" class="buy-btn">
-//           Buy
-//         </a>
-//       </div>
-//     </div>
-
-//   </div>
-//   `;
-// }
-
-
+// ✅ PRODUCT CARD — uses relative paths (works from pages/ folder)
 function renderProductCard(p) {
+  // If img is already a full URL (http/https), use as-is
+  // Otherwise build a relative path from pages/ → ../images/
   const imgSrc = p.img && p.img.startsWith('http')
     ? p.img
-    : '/natures-touch/images/' + p.img;
+    : '../images/' + p.img;
 
-  const checkoutHref = '/natures-touch/pages/checkout.html?id=' + p.id;
+  // Relative path from pages/products.html → pages/checkout.html
+  const checkoutHref = 'checkout.html?id=' + p.id;
+
+  const safeName = p.name.replace(/'/g, "\\'");
 
   return `
   <div class="product-card">
     <div class="product-img-wrap">
-      <img src="${imgSrc}" alt="${p.name}" />
+      <img src="${imgSrc}" alt="${p.name}" onerror="this.style.background='var(--linen)'" />
       <div class="product-overlay" onclick="quickView('${p.id}')">
         Quick View
       </div>
@@ -118,27 +57,25 @@ function renderProductCard(p) {
       <div class="product-price">₹${p.price}</div>
       <div class="product-actions">
         <button class="cart-btn"
-          onclick="Cart.add({id:'${p.id}',name:'${p.name}',price:${p.price},img:'${imgSrc}',qty:1})">
-          Cart
+          onclick="Cart.add({id:'${p.id}',name:'${safeName}',price:${p.price},img:'${imgSrc}',qty:1})">
+          🛒 Cart
         </button>
-        <a href="${checkoutHref}" class="buy-btn">Buy</a>
+        <a href="${checkoutHref}" class="buy-btn">Buy Now →</a>
       </div>
     </div>
   </div>
   `;
 }
 
-
-
 // ✅ INIT
 document.addEventListener('DOMContentLoaded', () => {
   console.log("SESSION:", Auth.getSession());
-
   if (typeof initNav === "function") initNav();
   if (typeof initAnimations === "function") initAnimations();
 });
 
 
+// ✅ Profile image upload
 const fileInput = document.getElementById("fileInput");
 
 if (fileInput) {
@@ -169,8 +106,8 @@ if (fileInput) {
   });
 }
 
+// ✅ Profile image load
 document.addEventListener("DOMContentLoaded", () => {
-
   const savedImg = localStorage.getItem("profileImg");
   const img = document.getElementById("profileImg");
 
@@ -179,10 +116,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (savedImg) {
     img.src = savedImg;
   } else {
-    // ✅ DEFAULT IMAGE FIX
     img.src = window.location.pathname.includes('/pages/')
       ? '../images/default-avatar.png'
       : 'images/default-avatar.png';
   }
-
 });
